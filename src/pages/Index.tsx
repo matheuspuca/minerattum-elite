@@ -1,9 +1,8 @@
 import { Navbar } from "@/components/Navbar";
 import { HeroSection } from "@/components/HeroSection";
 import { SmartDrillSection } from "@/components/SmartDrillSection";
-import { TrainingCarousel } from "@/components/TrainingCarousel";
-import { SocialProof } from "@/components/SocialProof";
-import { LeadCapture } from "@/components/LeadCapture";
+import { AcademySection } from "@/components/AcademySection";
+import { TrustBanner } from "@/components/TrustBanner";
 import { Footer } from "@/components/Footer";
 
 const Index = () => {
@@ -12,9 +11,8 @@ const Index = () => {
       <Navbar />
       <HeroSection />
       <SmartDrillSection />
-      <TrainingCarousel />
-      <SocialProof />
-      <LeadCapture />
+      <AcademySection />
+      <TrustBanner />
       <Footer />
     </main>
   );
