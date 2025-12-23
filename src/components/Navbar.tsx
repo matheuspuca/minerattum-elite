@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const navLinks = [
-  { label: "Soluções", href: "#solucoes" },
   { label: "SmartDrill", href: "#smartdrill", highlight: true },
-  { label: "Treinamentos SST", href: "#treinamentos" },
+  { label: "Academy", href: "#academy" },
   { label: "Sobre", href: "#sobre" },
   { label: "Contato", href: "#contato" },
 ];
@@ -19,16 +18,16 @@ export const Navbar = () => {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/50 shadow-sm"
+      className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/50"
     >
       <div className="container mx-auto px-4">
-        <nav className="flex items-center justify-between h-16 md:h-20">
+        <nav className="flex items-center justify-between h-16 md:h-18">
           {/* Logo */}
-          <a href="#" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-              <span className="font-heading font-bold text-primary-foreground text-lg">M</span>
+          <a href="#" className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center">
+              <Zap className="w-5 h-5 text-primary-foreground" />
             </div>
-            <span className="font-heading font-bold text-xl md:text-2xl text-foreground">
+            <span className="font-semibold text-xl text-foreground tracking-tight">
               Minerattum
             </span>
           </a>
@@ -52,8 +51,8 @@ export const Navbar = () => {
 
           {/* CTA Button */}
           <div className="hidden lg:block">
-            <Button variant="outline" className="border-primary/50 text-primary hover:bg-primary hover:text-primary-foreground">
-              Portal do Cliente
+            <Button variant="ghost" className="text-foreground border border-border/50 hover:bg-muted hover:border-primary/30">
+              Acessar Plataforma
             </Button>
           </div>
 
@@ -89,8 +88,8 @@ export const Navbar = () => {
                   {link.label}
                 </a>
               ))}
-              <Button variant="outline" className="mt-2 border-primary/50 text-primary hover:bg-primary hover:text-primary-foreground">
-                Portal do Cliente
+              <Button variant="ghost" className="mt-2 text-foreground border border-border/50 hover:bg-muted">
+                Acessar Plataforma
               </Button>
             </div>
           </motion.div>

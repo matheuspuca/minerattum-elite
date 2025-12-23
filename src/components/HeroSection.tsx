@@ -1,16 +1,16 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Zap } from "lucide-react";
+import { ArrowRight, Zap, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden bg-gradient-to-b from-muted/50 via-background to-background">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 topography-bg opacity-50" />
+    <section className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden bg-background">
+      {/* Subtle Grid Pattern */}
+      <div className="absolute inset-0 grid-pattern-bg opacity-30" />
       
       {/* Gradient Orbs */}
-      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px]" />
-      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-accent/5 rounded-full blur-[100px]" />
+      <div className="absolute top-1/3 left-1/4 w-[600px] h-[600px] bg-primary/8 rounded-full blur-[150px]" />
+      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-accent/5 rounded-full blur-[120px]" />
 
       <div className="container relative z-10 px-4 py-20 md:py-32">
         <motion.div
@@ -24,11 +24,11 @@ export const HeroSection = () => {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card border border-border shadow-sm mb-8"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-8"
           >
             <Zap className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium text-muted-foreground">
-              Tecnologia de ponta para mineração
+            <span className="text-sm font-medium text-primary">
+              Software + Educação para Mineração
             </span>
           </motion.div>
 
@@ -37,11 +37,10 @@ export const HeroSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.6 }}
-            className="font-heading font-bold text-4xl md:text-5xl lg:text-6xl xl:text-7xl leading-tight mb-6"
+            className="font-semibold text-4xl md:text-5xl lg:text-6xl xl:text-7xl leading-[1.1] mb-6 tracking-tight"
           >
-            Inteligência Geotécnica e{" "}
-            <span className="text-gradient-gold">Capacitação de Elite</span>
-            {" "}para a Mineração 4.0
+            Tecnologia e Inteligência para a{" "}
+            <span className="text-gradient-blue">Mineração do Futuro</span>
           </motion.h1>
 
           {/* Subheadline */}
@@ -51,8 +50,7 @@ export const HeroSection = () => {
             transition={{ delay: 0.4, duration: 0.6 }}
             className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10"
           >
-            Unimos softwares de alta performance e treinamentos especializados em SST 
-            para transformar operações de desmonte e segurança.
+            Soluções de software avançado e conteúdo técnico especializado para engenheiros e gestores.
           </motion.p>
 
           {/* CTA Buttons */}
@@ -64,17 +62,18 @@ export const HeroSection = () => {
           >
             <Button 
               size="lg" 
-              className="bg-primary text-primary-foreground hover:bg-primary/90 glow-gold text-base px-8 py-6 rounded-xl group"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 glow-blue text-base px-8 py-6 rounded-xl group"
             >
-              Conheça Nossas Soluções
+              Conheça o SmartDrill
               <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Button>
             <Button 
               variant="outline" 
               size="lg"
-              className="border-border/50 text-foreground hover:bg-secondary text-base px-8 py-6 rounded-xl"
+              className="border-border/50 text-foreground hover:bg-muted hover:border-accent/30 text-base px-8 py-6 rounded-xl group"
             >
-              Fale com Especialista
+              <BookOpen className="mr-2 w-5 h-5 text-accent" />
+              Ver Materiais Educativos
             </Button>
           </motion.div>
         </motion.div>
