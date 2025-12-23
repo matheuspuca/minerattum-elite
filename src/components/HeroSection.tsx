@@ -10,7 +10,7 @@ export const HeroSection = () => {
       
       {/* Gradient Orbs */}
       <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px]" />
-      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-amber-500/5 rounded-full blur-[100px]" />
+      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-accent/5 rounded-full blur-[100px]" />
 
       <div className="container relative z-10 px-4 py-20 md:py-32">
         <motion.div
