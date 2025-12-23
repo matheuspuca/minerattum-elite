@@ -47,9 +47,9 @@ const AnimatedCounter = ({ value, suffix }: { value: number; suffix: string }) =
 
 export const SocialProof = () => {
   return (
-    <section id="sobre" className="relative py-24 md:py-32 overflow-hidden">
+    <section id="sobre" className="relative py-24 md:py-32 overflow-hidden bg-muted/30">
       {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-secondary/10 to-background" />
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-muted/30 to-background" />
 
       <div className="container relative z-10 px-4">
         {/* Stats Grid */}
@@ -97,7 +97,7 @@ export const SocialProof = () => {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.3 + index * 0.1, duration: 0.5 }}
-                className="glass-card px-8 py-4 rounded-xl"
+                className="px-8 py-4 rounded-xl bg-card border border-border/50 shadow-sm"
               >
                 <span className="font-heading font-semibold text-lg md:text-xl text-muted-foreground/70 hover:text-foreground transition-colors">
                   {partner}

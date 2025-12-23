@@ -28,10 +28,10 @@ export const LeadCapture = () => {
   };
 
   return (
-    <section id="contato" className="relative py-24 md:py-32 overflow-hidden">
+    <section id="contato" className="relative py-24 md:py-32 overflow-hidden bg-slate-900">
       {/* Background Glow */}
       <div className="absolute inset-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-primary/10 rounded-full blur-[120px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-primary/15 rounded-full blur-[120px]" />
       </div>
 
       <div className="container relative z-10 px-4">
@@ -43,18 +43,18 @@ export const LeadCapture = () => {
           className="max-w-2xl mx-auto text-center"
         >
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-8">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/10 mb-8">
             <Sparkles className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium text-muted-foreground">
+            <span className="text-sm font-medium text-white/70">
               Transforme sua operação
             </span>
           </div>
 
-          <h2 className="font-heading font-bold text-3xl md:text-4xl lg:text-5xl mb-4">
+          <h2 className="font-heading font-bold text-3xl md:text-4xl lg:text-5xl mb-4 text-white">
             Modernize sua <span className="text-gradient-gold">operação</span> hoje
           </h2>
           
-          <p className="text-muted-foreground text-lg mb-10 max-w-lg mx-auto">
+          <p className="text-white/60 text-lg mb-10 max-w-lg mx-auto">
             Receba uma consultoria gratuita sobre como nossas soluções podem 
             impactar sua operação de mineração.
           </p>
@@ -66,7 +66,7 @@ export const LeadCapture = () => {
               placeholder="seu@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="flex-1 h-14 bg-secondary/50 border-border/50 text-foreground placeholder:text-muted-foreground rounded-xl focus:border-primary focus:ring-primary"
+              className="flex-1 h-14 bg-white/10 border-white/20 text-white placeholder:text-white/40 rounded-xl focus:border-primary focus:ring-primary"
               required
             />
             <Button 
@@ -86,7 +86,7 @@ export const LeadCapture = () => {
             </Button>
           </form>
 
-          <p className="text-xs text-muted-foreground mt-4">
+          <p className="text-xs text-white/40 mt-4">
             Sem spam. Respeitamos sua privacidade.
           </p>
         </motion.div>
