@@ -30,7 +30,7 @@ const courses = [
     icon: Mountain,
     duration: "40h",
     students: "2.400+",
-    color: "from-amber-500 to-orange-600",
+    color: "from-accent to-orange-600",
     featured: true,
   },
   {
@@ -51,7 +51,7 @@ const courses = [
     icon: Truck,
     duration: "16h",
     students: "3.100+",
-    color: "from-blue-500 to-indigo-600",
+    color: "from-primary to-blue-600",
   },
   {
     id: 4,
@@ -71,7 +71,7 @@ const courses = [
     icon: Flame,
     duration: "32h",
     students: "980+",
-    color: "from-primary to-amber-600",
+    color: "from-accent to-orange-600",
   },
   {
     id: 6,

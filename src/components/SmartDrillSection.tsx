@@ -146,7 +146,7 @@ export const SmartDrillSection = () => {
                 {[
                   { label: "Furos", value: "127", icon: Circle, color: "text-blue-400" },
                   { label: "Prof. Média", value: "12.4m", icon: TrendingDown, color: "text-emerald-400" },
-                  { label: "Dureza Média", value: "72 MPa", icon: Mountain, color: "text-amber-400" },
+                  { label: "Dureza Média", value: "72 MPa", icon: Mountain, color: "text-accent" },
                   { label: "Eficiência", value: "94%", icon: Gauge, color: "text-primary" },
                 ].map((stat, i) => (
                   <div key={i} className="bg-white/5 rounded-lg p-3 border border-white/5">
@@ -183,8 +183,8 @@ export const SmartDrillSection = () => {
                   <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
                     <defs>
                       <linearGradient id="hardnessGradient" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="hsl(32, 95%, 44%)" stopOpacity="0.4" />
-                        <stop offset="100%" stopColor="hsl(32, 95%, 44%)" stopOpacity="0" />
+                        <stop offset="0%" stopColor="hsl(210, 100%, 50%)" stopOpacity="0.4" />
+                        <stop offset="100%" stopColor="hsl(210, 100%, 50%)" stopOpacity="0" />
                       </linearGradient>
                     </defs>
                     <motion.path
@@ -202,7 +202,7 @@ export const SmartDrillSection = () => {
                       transition={{ duration: 1.5, delay: 0.5 }}
                       d={`M 0 ${128 - (depthData[0].hardness / 100) * 128} ${depthData.map((d, i) => `L ${(i / (depthData.length - 1)) * 100}% ${128 - (d.hardness / 100) * 128}`).join(' ')}`}
                       fill="none"
-                      stroke="hsl(32, 95%, 44%)"
+                      stroke="hsl(210, 100%, 50%)"
                       strokeWidth="2"
                     />
                   </svg>
