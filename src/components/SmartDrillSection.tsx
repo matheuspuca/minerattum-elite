@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Drill, Activity, Layers, Gauge, TrendingDown, Mountain, Circle } from "lucide-react";
+import { ArrowRight, Drill, Activity, Layers, Gauge, TrendingDown, Mountain, Circle, AlertTriangle, Target, Shield, DollarSign } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const depthData = [
@@ -19,76 +19,107 @@ const drillLogs = [
   { id: "FU-2849", depth: "0.0m", status: "pending", time: "--:--" },
 ];
 
+const solutionCards = [
+  {
+    icon: Target,
+    title: "QA/QC em Tempo Real",
+    description: "Compare planejado vs. executado e corrija desvios antes do carregamento.",
+    color: "text-blue-500",
+    bgColor: "bg-blue-500/10",
+  },
+  {
+    icon: DollarSign,
+    title: "Redução de Custo",
+    description: "Otimize a razão de carga e economize explosivos com dados precisos da malha.",
+    color: "text-emerald-500",
+    bgColor: "bg-emerald-500/10",
+  },
+  {
+    icon: Shield,
+    title: "Segurança & Compliance",
+    description: "Operação alinhada às normas de SST e controle rigoroso de dados.",
+    color: "text-primary",
+    bgColor: "bg-primary/10",
+  },
+];
+
 export const SmartDrillSection = () => {
   return (
-    <section id="smartdrill" className="relative py-24 md:py-32 overflow-hidden bg-muted/30">
+    <section id="smartdrill" className="relative py-20 md:py-28 overflow-hidden bg-gradient-to-b from-background to-muted/50">
       <div className="container relative z-10 px-4">
+        {/* Main Headline Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+          className="text-center max-w-4xl mx-auto mb-16"
+        >
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-6">
+            <Drill className="w-4 h-4 text-primary" />
+            <span className="text-sm font-semibold text-primary">SmartDrill Pro</span>
+          </div>
+
+          <h2 className="font-heading font-bold text-3xl md:text-4xl lg:text-5xl mb-6 text-foreground leading-tight">
+            A <span className="text-gradient-gold">Precisão Cirúrgica</span> que seu Desmonte de Rochas Exige.
+          </h2>
+          
+          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
+            Transforme dados de perfuração em inteligência geotécnica. Garanta a fragmentação ideal e reduza o custo operacional (OPEX) do desmonte.
+          </p>
+        </motion.div>
+
+        {/* Problem Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, delay: 0.1 }}
+          className="mb-16"
+        >
+          <div className="relative bg-foreground/5 border border-border/50 rounded-2xl p-6 md:p-8 max-w-4xl mx-auto">
+            <div className="absolute -top-4 left-6 md:left-8">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-destructive/10 border border-destructive/20">
+                <AlertTriangle className="w-4 h-4 text-destructive" />
+                <span className="text-sm font-medium text-destructive">Você ainda opera no escuro?</span>
+              </div>
+            </div>
+            
+            <p className="text-muted-foreground pt-4 text-base md:text-lg leading-relaxed">
+              Planejamento e execução raramente andam juntos. <span className="text-foreground font-medium">Desvios de furos não detectados</span>, sobrecarga de explosivos para compensar erros e <span className="text-foreground font-medium">planilhas manuais</span> geram ineficiência, repé e riscos operacionais desnecessários.
+            </p>
+          </div>
+        </motion.div>
+
+        {/* Solution Cards */}
+        <div className="grid md:grid-cols-3 gap-6 mb-16">
+          {solutionCards.map((card, i) => (
+            <motion.div
+              key={card.title}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 + i * 0.1 }}
+              className="group relative bg-card border border-border/50 rounded-2xl p-6 hover:border-primary/30 hover:shadow-lg transition-all duration-300"
+            >
+              <div className={`w-12 h-12 rounded-xl ${card.bgColor} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                <card.icon className={`w-6 h-6 ${card.color}`} />
+              </div>
+              <h3 className="font-heading font-bold text-lg mb-2 text-foreground">{card.title}</h3>
+              <p className="text-muted-foreground text-sm leading-relaxed">{card.description}</p>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Dashboard + Authority Section */}
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Text Content */}
+          {/* Dark Mode Dashboard Mockup */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
-          >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 mb-6">
-              <Drill className="w-4 h-4 text-primary" />
-              <span className="text-sm font-semibold text-primary">Produto Principal</span>
-            </div>
-
-            <h2 className="font-heading font-bold text-3xl md:text-4xl lg:text-5xl mb-4 text-foreground">
-              SmartDrill <span className="text-gradient-gold">Pro</span>
-            </h2>
-            
-            <p className="text-xl text-muted-foreground mb-6">
-              O SaaS definitivo para perfuração de rocha e desmonte com explosivos.
-            </p>
-            
-            <p className="text-muted-foreground mb-8 leading-relaxed">
-              Monitore profundidade, dureza da rocha e performance em tempo real. 
-              Nosso dashboard inteligente transforma dados brutos em insights acionáveis 
-              para otimizar cada furo da sua operação.
-            </p>
-
-            <ul className="space-y-3 mb-10">
-              {[
-                "Gráficos de profundidade vs dureza da rocha",
-                "Monitoramento de penetração em tempo real",
-                "Análise preditiva de desgaste de brocas",
-                "Relatórios automáticos por turno e bancada"
-              ].map((feature, i) => (
-                <motion.li
-                  key={i}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.2 + i * 0.1, duration: 0.5 }}
-                  className="flex items-center gap-3 text-foreground/90"
-                >
-                  <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center">
-                    <div className="w-2 h-2 rounded-full bg-primary" />
-                  </div>
-                  {feature}
-                </motion.li>
-              ))}
-            </ul>
-
-            <Button 
-              size="lg" 
-              className="bg-primary text-primary-foreground hover:bg-primary/90 text-base px-8 rounded-xl group"
-            >
-              Explorar o SmartDrill
-              <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Button>
-          </motion.div>
-
-          {/* Dark Mode Dashboard Mockup */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }}
-            className="relative"
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="relative order-2 lg:order-1"
           >
             <div className="absolute -inset-4 bg-primary/5 blur-3xl rounded-3xl" />
             
@@ -131,7 +162,7 @@ export const SmartDrillSection = () => {
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
                     <Layers className="w-4 h-4 text-primary" />
-                    <span className="text-sm font-medium text-white">Profundidade vs Dureza da Rocha</span>
+                    <span className="text-sm font-medium text-white">Planejado vs Executado</span>
                   </div>
                   <div className="flex items-center gap-3 text-[10px]">
                     <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-primary" /> Dureza (MPa)</span>
@@ -236,6 +267,63 @@ export const SmartDrillSection = () => {
                   ))}
                 </div>
               </div>
+            </div>
+          </motion.div>
+
+          {/* Authority Section + CTA */}
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.3 }}
+            className="order-1 lg:order-2"
+          >
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 mb-6">
+              <Shield className="w-4 h-4 text-primary" />
+              <span className="text-sm font-semibold text-primary">Selo Minerattum</span>
+            </div>
+
+            <h3 className="font-heading font-bold text-2xl md:text-3xl mb-4 text-foreground">
+              Desenvolvido por quem <span className="text-gradient-gold">entende de rocha</span>.
+            </h3>
+            
+            <p className="text-muted-foreground mb-6 leading-relaxed text-base md:text-lg">
+              O SmartDrill não é apenas um software de TI. É uma ferramenta forjada pela engenharia de minas, com o selo de qualidade e segurança (SST) da Minerattum.
+            </p>
+
+            <ul className="space-y-3 mb-8">
+              {[
+                "Integração nativa com sua operação atual",
+                "Suporte técnico especializado em mineração",
+                "Atualizações contínuas baseadas em feedback do campo"
+              ].map((feature, i) => (
+                <motion.li
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.4 + i * 0.1, duration: 0.5 }}
+                  className="flex items-center gap-3 text-foreground/90"
+                >
+                  <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+                    <div className="w-2 h-2 rounded-full bg-primary" />
+                  </div>
+                  {feature}
+                </motion.li>
+              ))}
+            </ul>
+
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Button 
+                size="lg" 
+                className="bg-primary text-primary-foreground hover:bg-primary/90 text-base px-8 rounded-xl group"
+              >
+                Agendar Demo Técnica
+                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Button>
+              <p className="text-sm text-muted-foreground self-center">
+                Integração nativa com sua operação atual.
+              </p>
             </div>
           </motion.div>
         </div>
