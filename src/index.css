@@ -13,60 +13,64 @@
 
 @layer base {
   :root {
-    --background: 222 47% 6%;
-    --foreground: 210 20% 95%;
+    --background: 210 20% 98%;
+    --foreground: 222 47% 11%;
 
-    --card: 222 40% 10%;
-    --card-foreground: 210 20% 95%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
 
-    --popover: 222 40% 10%;
-    --popover-foreground: 210 20% 95%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
 
-    --primary: 38 92% 50%;
-    --primary-foreground: 222 47% 6%;
+    --primary: 32 95% 44%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 215 25% 18%;
-    --secondary-foreground: 210 20% 90%;
+    --secondary: 210 20% 94%;
+    --secondary-foreground: 222 47% 11%;
 
-    --muted: 215 25% 15%;
-    --muted-foreground: 215 15% 55%;
+    --muted: 210 15% 92%;
+    --muted-foreground: 215 16% 47%;
 
-    --accent: 38 92% 50%;
-    --accent-foreground: 222 47% 6%;
+    --accent: 32 95% 44%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 215 25% 20%;
-    --input: 215 25% 18%;
-    --ring: 38 92% 50%;
+    --border: 214 20% 88%;
+    --input: 214 20% 88%;
+    --ring: 32 95% 44%;
 
     --radius: 0.75rem;
 
     /* Custom tokens */
-    --gold: 38 92% 50%;
-    --gold-light: 43 96% 56%;
-    --gold-dark: 32 90% 40%;
-    --slate-900: 222 47% 6%;
-    --slate-800: 222 40% 10%;
-    --slate-700: 215 25% 15%;
-    --slate-600: 215 25% 22%;
-    --silver: 210 20% 85%;
-    --silver-muted: 215 15% 55%;
+    --gold: 32 95% 44%;
+    --gold-light: 38 92% 50%;
+    --gold-dark: 28 90% 35%;
+    --slate-900: 222 47% 11%;
+    --slate-800: 215 28% 17%;
+    --slate-700: 215 20% 25%;
+    --slate-600: 215 16% 35%;
+    --silver: 210 15% 40%;
+    --silver-muted: 215 10% 60%;
+
+    /* Dashboard dark theme (for SmartDrill mockup) */
+    --dashboard-bg: 222 47% 8%;
+    --dashboard-card: 222 40% 12%;
+    --dashboard-border: 215 25% 20%;
 
     /* Glassmorphism */
-    --glass-bg: 222 40% 12% / 0.6;
-    --glass-border: 215 25% 30% / 0.3;
+    --glass-bg: 0 0% 100% / 0.8;
+    --glass-border: 214 20% 85% / 0.5;
 
     /* Gradients */
-    --gradient-gold: linear-gradient(135deg, hsl(38, 92%, 50%), hsl(43, 96%, 56%));
-    --gradient-dark: linear-gradient(180deg, hsl(222, 47%, 6%), hsl(222, 40%, 4%));
-    --gradient-radial: radial-gradient(ellipse at center, hsl(215, 25%, 12%), hsl(222, 47%, 6%));
+    --gradient-gold: linear-gradient(135deg, hsl(32, 95%, 44%), hsl(38, 92%, 50%));
+    --gradient-light: linear-gradient(180deg, hsl(210, 20%, 98%), hsl(210, 15%, 95%));
     
     /* Shadows */
-    --shadow-gold: 0 0 40px hsl(38 92% 50% / 0.15);
-    --shadow-card: 0 8px 32px hsl(0 0% 0% / 0.3);
-    --shadow-elevated: 0 20px 60px hsl(0 0% 0% / 0.4);
+    --shadow-gold: 0 0 40px hsl(32 95% 44% / 0.15);
+    --shadow-card: 0 4px 24px hsl(222 47% 11% / 0.08);
+    --shadow-elevated: 0 12px 40px hsl(222 47% 11% / 0.12);
   }
 
   .dark {
@@ -96,19 +100,25 @@
 
 @layer components {
   .glass-card {
-    @apply bg-card/60 backdrop-blur-xl border border-border/30 shadow-lg;
+    @apply bg-card/90 backdrop-blur-xl border border-border/50 shadow-lg;
+  }
+
+  .glass-card-dark {
+    background: hsl(var(--dashboard-card));
+    border: 1px solid hsl(var(--dashboard-border));
+    backdrop-filter: blur(20px);
   }
 
   .text-gradient-gold {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, hsl(38, 92%, 50%), hsl(43, 96%, 56%));
+    background-image: linear-gradient(135deg, hsl(32, 95%, 44%), hsl(38, 92%, 50%));
   }
 
   .glow-gold {
-    box-shadow: 0 0 40px hsl(38 92% 50% / 0.2), 0 0 80px hsl(38 92% 50% / 0.1);
+    box-shadow: 0 0 30px hsl(32 95% 44% / 0.25), 0 0 60px hsl(32 95% 44% / 0.1);
   }
 
   .topography-bg {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%23334155' fill-opacity='0.15'%3E%3Cpath opacity='.5' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9z'/%3E%3Cpath d='M6 5V0H5v5H0v1h5v94h1V6h94V5H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%23cbd5e1' fill-opacity='0.15'%3E%3Cpath opacity='.5' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9z'/%3E%3Cpath d='M6 5V0H5v5H0v1h5v94h1V6h94V5H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   }
 }
