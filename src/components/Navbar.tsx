@@ -29,11 +29,14 @@ export const Navbar = () => {
         <nav className="flex items-center justify-between h-16 md:h-18">
           {/* Logo */}
           <Link to="/" className="flex items-center">
-            <img 
-              src={minerattumLogo} 
-              alt="Minerattum" 
-              className="h-14 md:h-16 w-auto brightness-0 invert"
-            />
+            <div className="bg-primary/10 p-2 rounded-lg border border-primary/30">
+              <img 
+                src={minerattumLogo} 
+                alt="Minerattum" 
+                className="h-12 md:h-14 w-auto"
+                style={{ filter: 'brightness(0) saturate(100%) invert(55%) sepia(98%) saturate(456%) hue-rotate(176deg) brightness(96%) contrast(101%)' }}
+              />
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
@@ -76,9 +79,11 @@ export const Navbar = () => {
 
           {/* CTA Button */}
           <div className="hidden lg:block">
-            <Button variant="ghost" className="text-foreground border border-border/50 hover:bg-muted hover:border-primary/30">
-              Acessar Plataforma
-            </Button>
+            <a href="https://smartdrillpro.vercel.app" target="_blank" rel="noopener noreferrer">
+              <Button variant="ghost" className="text-foreground border border-border/50 hover:bg-muted hover:border-primary/30">
+                Acessar Plataforma
+              </Button>
+            </a>
           </div>
 
           {/* Mobile Menu Button */}
@@ -134,9 +139,11 @@ export const Navbar = () => {
                   </a>
                 );
               })}
-              <Button variant="ghost" className="mt-2 text-foreground border border-border/50 hover:bg-muted">
-                Acessar Plataforma
-              </Button>
+              <a href="https://smartdrillpro.vercel.app" target="_blank" rel="noopener noreferrer" className="w-full">
+                <Button variant="ghost" className="mt-2 w-full text-foreground border border-border/50 hover:bg-muted">
+                  Acessar Plataforma
+                </Button>
+              </a>
             </div>
           </motion.div>
         )}
