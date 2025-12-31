@@ -2,16 +2,20 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Menu, X, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link, useLocation } from "react-router-dom";
 
 const navLinks = [
-  { label: "SmartDrill", href: "#smartdrill", highlight: true },
-  { label: "Academy", href: "#academy" },
-  { label: "Sobre", href: "#sobre" },
-  { label: "Contato", href: "#contato" },
+  { label: "SmartDrill", href: "/smartdrill", highlight: true },
+  { label: "Academy", href: "/#academy" },
+  { label: "Sobre", href: "/#sobre" },
+  { label: "Contato", href: "/#contato" },
 ];
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+
+  const isSmartDrillPage = location.pathname === "/smartdrill";
 
   return (
     <motion.header
@@ -23,30 +27,51 @@ export const Navbar = () => {
       <div className="container mx-auto px-4">
         <nav className="flex items-center justify-between h-16 md:h-18">
           {/* Logo */}
-          <a href="#" className="flex items-center gap-2.5">
+          <Link to="/" className="flex items-center gap-2.5">
             <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center">
               <Zap className="w-5 h-5 text-primary-foreground" />
             </div>
             <span className="font-semibold text-xl text-foreground tracking-tight">
               Minerattum
             </span>
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                className={`text-sm font-medium transition-colors hover:text-primary ${
-                  link.highlight
-                    ? "text-primary font-semibold"
-                    : "text-muted-foreground"
-                }`}
-              >
-                {link.label}
-              </a>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = link.href === "/smartdrill" && isSmartDrillPage;
+              const isRouterLink = link.href.startsWith("/") && !link.href.includes("#");
+              
+              if (isRouterLink) {
+                return (
+                  <Link
+                    key={link.label}
+                    to={link.href}
+                    className={`text-sm font-medium transition-colors hover:text-primary ${
+                      isActive || link.highlight
+                        ? "text-primary font-semibold"
+                        : "text-muted-foreground"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              }
+              
+              return (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  className={`text-sm font-medium transition-colors hover:text-primary ${
+                    link.highlight
+                      ? "text-primary font-semibold"
+                      : "text-muted-foreground"
+                  }`}
+                >
+                  {link.label}
+                </a>
+              );
+            })}
           </div>
 
           {/* CTA Button */}
@@ -74,20 +99,41 @@ export const Navbar = () => {
             className="lg:hidden py-4 border-t border-border/20"
           >
             <div className="flex flex-col gap-4">
-              {navLinks.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  onClick={() => setIsOpen(false)}
-                  className={`text-base font-medium transition-colors hover:text-primary ${
-                    link.highlight
-                      ? "text-primary font-semibold"
-                      : "text-muted-foreground"
-                  }`}
-                >
-                  {link.label}
-                </a>
-              ))}
+              {navLinks.map((link) => {
+                const isRouterLink = link.href.startsWith("/") && !link.href.includes("#");
+                
+                if (isRouterLink) {
+                  return (
+                    <Link
+                      key={link.label}
+                      to={link.href}
+                      onClick={() => setIsOpen(false)}
+                      className={`text-base font-medium transition-colors hover:text-primary ${
+                        link.highlight
+                          ? "text-primary font-semibold"
+                          : "text-muted-foreground"
+                      }`}
+                    >
+                      {link.label}
+                    </Link>
+                  );
+                }
+                
+                return (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    onClick={() => setIsOpen(false)}
+                    className={`text-base font-medium transition-colors hover:text-primary ${
+                      link.highlight
+                        ? "text-primary font-semibold"
+                        : "text-muted-foreground"
+                    }`}
+                  >
+                    {link.label}
+                  </a>
+                );
+              })}
               <Button variant="ghost" className="mt-2 text-foreground border border-border/50 hover:bg-muted">
                 Acessar Plataforma
               </Button>
