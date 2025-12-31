@@ -26,13 +26,13 @@ export const Navbar = () => {
       className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/50"
     >
       <div className="container mx-auto px-4">
-        <nav className="flex items-center justify-between h-16 md:h-18">
+        <nav className="flex items-center justify-between h-20 md:h-24">
           {/* Logo */}
           <Link to="/" className="flex items-center">
             <img 
               src={minerattumLogo} 
               alt="Minerattum" 
-              className="h-16 md:h-20 w-auto"
+              className="h-20 md:h-28 w-auto"
               style={{ filter: 'brightness(0) saturate(100%) invert(55%) sepia(98%) saturate(456%) hue-rotate(176deg) brightness(96%) contrast(101%)' }}
             />
           </Link>
