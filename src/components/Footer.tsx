@@ -87,19 +87,36 @@ export const Footer = () => {
           <p className="text-muted-foreground text-xs">
             © {new Date().getFullYear()} Minerattum Tecnologia e Mineração. Todos os direitos reservados.
           </p>
-          <div className="flex items-center gap-3">
-            {socialLinks.map((social) => (
-              <a 
-                key={social.label} 
-                href={social.href} 
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={social.label} 
-                className="w-8 h-8 rounded-full bg-muted flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-muted/80 transition-all"
-              >
-                <social.icon className="w-4 h-4" />
-              </a>
-            ))}
+          <div className="flex items-center gap-4">
+            <Link 
+              to="/auth" 
+              className="text-xs text-muted-foreground hover:text-primary transition-colors flex items-center gap-1"
+            >
+              <span>Sistema Interno</span>
+            </Link>
+            <a 
+              href="https://mail.hostinger.com/v2/auth/login?redirect=%2F%3F_task%3Dlogout%26_token%3D6PPhAww6Hpt3IKumTrUGxIrdVrPAvkvQ"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-muted-foreground hover:text-primary transition-colors flex items-center gap-1"
+            >
+              <Mail className="w-3 h-3" />
+              <span>Email Corporativo</span>
+            </a>
+            <div className="flex items-center gap-3">
+              {socialLinks.map((social) => (
+                <a 
+                  key={social.label} 
+                  href={social.href} 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={social.label} 
+                  className="w-8 h-8 rounded-full bg-muted flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-muted/80 transition-all"
+                >
+                  <social.icon className="w-4 h-4" />
+                </a>
+              ))}
+            </div>
           </div>
         </div>
       </div>
