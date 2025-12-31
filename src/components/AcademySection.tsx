@@ -1,37 +1,37 @@
 import { motion } from "framer-motion";
-import { ArrowRight, BookOpen, FileText, Calculator, GraduationCap, Download, Users } from "lucide-react";
+import { ArrowRight, Gem, FileText, BookOpen, Sparkles, Download, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const products = [
   {
     id: 1,
     type: "Infoproduct",
-    title: "Manuais Técnicos",
-    description: "Guias completos de operação, desmonte e segurança para mineração.",
+    title: "E-books Premium",
+    description: "Conteúdo técnico exclusivo sobre desmonte de rochas, perfuração e otimização de custos operacionais.",
     icon: FileText,
     tag: "Download Imediato",
-    tagColor: "bg-primary/10 text-primary",
-    gradient: "from-primary/20 to-primary/5",
-    borderColor: "hover:border-primary/40",
-  },
-  {
-    id: 2,
-    type: "Training",
-    title: "Cursos Especializados",
-    description: "Formação técnica em Operação, Desmonte e SST ministrada por especialistas.",
-    icon: GraduationCap,
-    tag: "Certificado Incluso",
     tagColor: "bg-accent/10 text-accent",
     gradient: "from-accent/20 to-accent/5",
     borderColor: "hover:border-accent/40",
   },
   {
+    id: 2,
+    type: "Masterclass",
+    title: "Masterclasses",
+    description: "Aulas gravadas por especialistas do setor com metodologias aplicadas em grandes operações.",
+    icon: Sparkles,
+    tag: "Acesso Vitalício",
+    tagColor: "bg-primary/10 text-primary",
+    gradient: "from-primary/20 to-primary/5",
+    borderColor: "hover:border-primary/40",
+  },
+  {
     id: 3,
-    type: "Tools",
-    title: "Ferramentas Práticas",
-    description: "Planilhas, calculadoras e templates para gestão de bancada e explosivos.",
-    icon: Calculator,
-    tag: "Acesso Imediato",
+    type: "Templates",
+    title: "Templates & Planilhas",
+    description: "Ferramentas prontas para gestão de custos, planejamento de bancada e controle de produtividade.",
+    icon: TrendingUp,
+    tag: "Pronto para Usar",
     tagColor: "bg-emerald-500/10 text-emerald-400",
     gradient: "from-emerald-500/20 to-emerald-500/5",
     borderColor: "hover:border-emerald-500/40",
@@ -55,16 +55,16 @@ export const AcademySection = () => {
           className="text-center max-w-3xl mx-auto mb-16"
         >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent/10 border border-accent/20 mb-6">
-            <BookOpen className="w-4 h-4 text-accent" />
-            <span className="text-sm font-semibold text-accent">Conhecimento Premium</span>
+            <Gem className="w-4 h-4 text-accent" />
+            <span className="text-sm font-semibold text-accent">Infoprodutos Premium</span>
           </div>
 
           <h2 className="font-semibold text-3xl md:text-4xl lg:text-5xl mb-4 text-foreground leading-tight tracking-tight">
-            Minerattum <span className="text-gradient-gold">Academy</span> & Library
+            <span className="text-gradient-gold">Biblioteca</span> do Setor Mineral
           </h2>
           
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Conteúdo técnico especializado desenvolvido por engenheiros com experiência real em operações de mineração.
+            Infoprodutos de alto padrão para profissionais que buscam excelência técnica e resultados superiores em operações de mineração.
           </p>
         </motion.div>
 

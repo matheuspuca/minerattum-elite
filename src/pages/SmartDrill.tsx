@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/accordion";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import minerattumLogo from "@/assets/minerattum-logo.png";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -145,9 +146,16 @@ export default function SmartDrill() {
             variants={stagger}
             className="max-w-4xl mx-auto text-center"
           >
-            <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
-              <Zap className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium text-primary">Software de Gestão de Perfuração</span>
+            <motion.div variants={fadeInUp} className="flex flex-col items-center gap-4 mb-6">
+              <img 
+                src={minerattumLogo} 
+                alt="Minerattum" 
+                className="h-16 w-auto brightness-0 invert"
+              />
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
+                <Zap className="w-4 h-4 text-primary" />
+                <span className="text-sm font-medium text-primary">Software de Gestão de Perfuração</span>
+              </div>
             </motion.div>
             
             <motion.h1 variants={fadeInUp} className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight">
