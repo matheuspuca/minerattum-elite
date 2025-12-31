@@ -28,15 +28,12 @@ export const Navbar = () => {
       <div className="container mx-auto px-4">
         <nav className="flex items-center justify-between h-16 md:h-18">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3">
+          <Link to="/" className="flex items-center">
             <img 
               src={minerattumLogo} 
               alt="Minerattum" 
-              className="h-10 w-auto brightness-0 invert"
+              className="h-12 w-auto brightness-0 invert"
             />
-            <span className="font-semibold text-xl text-foreground tracking-tight">
-              Minerattum
-            </span>
           </Link>
 
           {/* Desktop Navigation */}
