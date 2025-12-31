@@ -7,7 +7,7 @@ import minerattumLogo from "@/assets/minerattum-logo.png";
 
 const navLinks = [
   { label: "SmartDrill", href: "/smartdrill", highlight: true },
-  { label: "Academy", href: "/#academy" },
+  { label: "Biblioteca", href: "/biblioteca" },
   { label: "Sobre", href: "/#sobre" },
   { label: "Contato", href: "/#contato" },
 ];
@@ -32,7 +32,7 @@ export const Navbar = () => {
             <img 
               src={minerattumLogo} 
               alt="Minerattum" 
-              className="h-12 w-auto brightness-0 invert"
+              className="h-14 md:h-16 w-auto brightness-0 invert"
             />
           </Link>
 

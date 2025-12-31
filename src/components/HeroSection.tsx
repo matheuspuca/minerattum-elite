@@ -50,7 +50,7 @@ export const HeroSection = () => {
             transition={{ delay: 0.4, duration: 0.6 }}
             className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10"
           >
-            Soluções de software avançado e conteúdo técnico especializado para engenheiros e gestores.
+            Software SaaS e infoprodutos de alto padrão para o setor mineral. Transforme dados em decisões estratégicas.
           </motion.p>
 
           {/* CTA Buttons */}
