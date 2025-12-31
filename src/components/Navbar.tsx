@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Menu, X, Zap } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "react-router-dom";
+import minerattumLogo from "@/assets/minerattum-logo.png";
 
 const navLinks = [
   { label: "SmartDrill", href: "/smartdrill", highlight: true },
@@ -27,10 +28,12 @@ export const Navbar = () => {
       <div className="container mx-auto px-4">
         <nav className="flex items-center justify-between h-16 md:h-18">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center">
-              <Zap className="w-5 h-5 text-primary-foreground" />
-            </div>
+          <Link to="/" className="flex items-center gap-3">
+            <img 
+              src={minerattumLogo} 
+              alt="Minerattum" 
+              className="h-10 w-auto brightness-0 invert"
+            />
             <span className="font-semibold text-xl text-foreground tracking-tight">
               Minerattum
             </span>

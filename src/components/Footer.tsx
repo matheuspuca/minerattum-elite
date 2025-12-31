@@ -1,5 +1,6 @@
-import { Linkedin, Instagram, Youtube, Mail, Phone, Zap } from "lucide-react";
+import { Linkedin, Instagram, Youtube, Mail, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
+import minerattumLogo from "@/assets/minerattum-logo.png";
 
 const footerLinks = {
   produto: [
@@ -31,10 +32,12 @@ export const Footer = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
-            <Link to="/" className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center">
-                <Zap className="w-4 h-4 text-primary-foreground" />
-              </div>
+            <Link to="/" className="flex items-center gap-3 mb-4">
+              <img 
+                src={minerattumLogo} 
+                alt="Minerattum" 
+                className="h-9 w-auto brightness-0 invert"
+              />
               <span className="font-semibold text-lg text-foreground">Minerattum</span>
             </Link>
             <p className="text-muted-foreground text-sm mb-4">
