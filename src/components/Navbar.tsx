@@ -77,7 +77,7 @@ export const Navbar = () => {
 
           {/* CTA Button */}
           <div className="hidden lg:block">
-            <a href="https://smartdrillpro.vercel.app" target="_blank" rel="noopener noreferrer">
+            <a href="https://smartdrillpro.vercel.app/signup" target="_blank" rel="noopener noreferrer">
               <Button variant="ghost" className="text-foreground border border-border/50 hover:bg-muted hover:border-primary/30">
                 Acessar Plataforma
               </Button>
@@ -137,7 +137,7 @@ export const Navbar = () => {
                   </a>
                 );
               })}
-              <a href="https://smartdrillpro.vercel.app" target="_blank" rel="noopener noreferrer" className="w-full">
+              <a href="https://smartdrillpro.vercel.app/signup" target="_blank" rel="noopener noreferrer" className="w-full">
                 <Button variant="ghost" className="mt-2 w-full text-foreground border border-border/50 hover:bg-muted">
                   Acessar Plataforma
                 </Button>

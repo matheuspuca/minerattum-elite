@@ -6,7 +6,7 @@ const footerLinks = {
   produto: [
     { label: "SmartDrill Pro", href: "/smartdrill", isRoute: true },
     { label: "Funcionalidades", href: "/smartdrill#features", isRoute: false },
-    { label: "Acessar Plataforma", href: "https://smartdrillpro.vercel.app", isRoute: false, external: true },
+    { label: "Acessar Plataforma", href: "https://smartdrillpro.vercel.app/signup", isRoute: false, external: true },
   ],
   biblioteca: [
     { label: "E-books Premium", href: "/biblioteca", isRoute: true },
