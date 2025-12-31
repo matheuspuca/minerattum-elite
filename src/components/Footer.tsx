@@ -1,4 +1,4 @@
-import { Linkedin, Instagram, Mail, Phone } from "lucide-react";
+import { Linkedin, Instagram, Mail, Phone, Lock, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
 import minerattumLogo from "@/assets/minerattum-logo.png";
 
@@ -90,18 +90,20 @@ export const Footer = () => {
           <div className="flex items-center gap-4">
             <Link 
               to="/auth" 
-              className="text-xs text-muted-foreground hover:text-primary transition-colors flex items-center gap-1"
+              className="text-xs text-muted-foreground hover:text-primary transition-colors flex items-center gap-1.5 px-3 py-1.5 rounded-md hover:bg-muted/50"
             >
+              <Lock className="w-3.5 h-3.5" />
               <span>Sistema Interno</span>
             </Link>
             <a 
               href="https://mail.hostinger.com/v2/auth/login?redirect=%2F%3F_task%3Dlogout%26_token%3D6PPhAww6Hpt3IKumTrUGxIrdVrPAvkvQ"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs text-muted-foreground hover:text-primary transition-colors flex items-center gap-1"
+              className="text-xs text-muted-foreground hover:text-primary transition-colors flex items-center gap-1.5 px-3 py-1.5 rounded-md hover:bg-muted/50"
             >
-              <Mail className="w-3 h-3" />
+              <Mail className="w-3.5 h-3.5" />
               <span>Email Corporativo</span>
+              <ExternalLink className="w-3 h-3 opacity-50" />
             </a>
             <div className="flex items-center gap-3">
               {socialLinks.map((social) => (
