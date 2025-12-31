@@ -9,7 +9,10 @@ import {
   Clock, 
   MessageCircle,
   Star,
-  ChevronDown
+  ChevronDown,
+  ClipboardList,
+  TrendingUp,
+  PieChart
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,7 +23,6 @@ import {
 } from "@/components/ui/accordion";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import minerattumLogo from "@/assets/minerattum-logo.png";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -147,24 +149,18 @@ export default function SmartDrill() {
             className="max-w-4xl mx-auto text-center"
           >
             <motion.div variants={fadeInUp} className="flex flex-col items-center gap-4 mb-6">
-              <img 
-                src={minerattumLogo} 
-                alt="Minerattum" 
-                className="h-16 w-auto brightness-0 invert"
-              />
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
                 <Zap className="w-4 h-4 text-primary" />
-                <span className="text-sm font-medium text-primary">Software de Gestão de Perfuração</span>
+                <span className="text-sm font-medium text-primary">SaaS de Gestão de Perfuração</span>
               </div>
             </motion.div>
             
             <motion.h1 variants={fadeInUp} className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight">
-              SmartDrill: O Fim do{" "}
-              <span className="text-primary">Empirismo</span> no Desmonte de Rochas
+              SmartDrill: <span className="text-primary">KPIs e BI Elite</span> para Perfuração de Rochas
             </motion.h1>
             
             <motion.p variants={fadeInUp} className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Gestão total de custos e produtividade com IA aplicada. Transforme dados de perfuração em inteligência operacional.
+              Sistema de gerenciamento de custos e tomada de decisões através de apontamentos diários. Dados transformados em inteligência operacional com dashboards de alta performance.
             </motion.p>
             
             <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -197,15 +193,15 @@ export default function SmartDrill() {
                 <ul className="space-y-3 text-muted-foreground">
                   <li className="flex items-start gap-3">
                     <span className="w-1.5 h-1.5 rounded-full bg-destructive mt-2 shrink-0" />
-                    Planilhas manuais sujeitas a erros
+                    Planilhas manuais e dados dispersos
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="w-1.5 h-1.5 rounded-full bg-destructive mt-2 shrink-0" />
-                    Desvios de furos não detectados
+                    Decisões baseadas em empirismo
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="w-1.5 h-1.5 rounded-full bg-destructive mt-2 shrink-0" />
-                    Sobrecarga de explosivos para compensar incertezas
+                    Sem KPIs claros de produtividade
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="w-1.5 h-1.5 rounded-full bg-destructive mt-2 shrink-0" />
@@ -220,19 +216,19 @@ export default function SmartDrill() {
                 <ul className="space-y-3 text-muted-foreground">
                   <li className="flex items-start gap-3">
                     <Check className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                    Analytics em tempo real automatizado
+                    Apontamentos diários centralizados
                   </li>
                   <li className="flex items-start gap-3">
                     <Check className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                    Comparação planejado vs executado instantânea
+                    Dashboard com KPIs e BI em tempo real
                   </li>
                   <li className="flex items-start gap-3">
                     <Check className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                    Otimização de carga baseada em dados reais
+                    Gestão completa de custos operacionais
                   </li>
                   <li className="flex items-start gap-3">
                     <Check className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                    Dashboard completo de custos (Capex/Opex)
+                    Decisões baseadas em dados confiáveis
                   </li>
                 </ul>
               </div>
@@ -260,9 +256,9 @@ export default function SmartDrill() {
 
           <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {[
-              { icon: BarChart3, title: "Planejamento Digital", desc: "Projetos de malha otimizados com visualização 3D" },
-              { icon: Clock, title: "Gestão de Perfuratrizes", desc: "Monitore produtividade e disponibilidade em tempo real" },
-              { icon: Shield, title: "Relatórios Automáticos", desc: "Documentação completa para compliance e SST" },
+              { icon: ClipboardList, title: "Apontamentos Diários", desc: "Registro simplificado de dados de perfuração que alimentam o sistema automaticamente" },
+              { icon: PieChart, title: "Dashboard Elite", desc: "KPIs e BI de alta performance para análise de custos e produtividade em tempo real" },
+              { icon: TrendingUp, title: "Tomada de Decisão", desc: "Dados precisos para decisões estratégicas de Capex, Opex e otimização operacional" },
             ].map((feature, i) => (
               <motion.div
                 key={feature.title}

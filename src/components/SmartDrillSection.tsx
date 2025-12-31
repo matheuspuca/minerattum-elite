@@ -22,18 +22,18 @@ const drillLogs = [
 const features = [
   {
     icon: LayoutDashboard,
-    title: "Planejamento Digital",
-    description: "Malhas de perfuração 100% digitais com sincronização em tempo real.",
+    title: "Dashboard Elite",
+    description: "KPIs e Business Intelligence em tempo real para decisões estratégicas.",
   },
   {
     icon: Gauge,
-    title: "Gestão de Perfuratrizes",
-    description: "Monitore produtividade, disponibilidade mecânica e vida útil dos equipamentos.",
+    title: "Apontamentos Diários",
+    description: "Registro simplificado de perfuração que alimenta automaticamente o sistema.",
   },
   {
     icon: FileText,
-    title: "Relatórios Automáticos",
-    description: "Relatórios de QA/QC e desempenho gerados automaticamente.",
+    title: "Gestão de Custos",
+    description: "Controle total de Capex e Opex com análises detalhadas por operação.",
   },
 ];
 
@@ -59,11 +59,11 @@ export const SmartDrillSection = () => {
           </div>
 
           <h2 className="font-semibold text-3xl md:text-4xl lg:text-5xl mb-4 text-foreground leading-tight tracking-tight">
-            SmartDrill Pro
+            SmartDrill
           </h2>
           
           <p className="text-xl md:text-2xl text-muted-foreground">
-            O sistema operacional do desmonte de rochas.
+            SaaS de gerenciamento de custos e tomada de decisões para perfuração de rochas.
           </p>
         </motion.div>
 
