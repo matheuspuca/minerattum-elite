@@ -1,4 +1,4 @@
-import { Linkedin, Instagram, Youtube, Mail, Phone } from "lucide-react";
+import { Linkedin, Instagram, Mail, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 import minerattumLogo from "@/assets/minerattum-logo.png";
 
@@ -6,23 +6,22 @@ const footerLinks = {
   produto: [
     { label: "SmartDrill Pro", href: "/smartdrill", isRoute: true },
     { label: "Funcionalidades", href: "/smartdrill#features", isRoute: false },
-    { label: "Preços", href: "/smartdrill#pricing", isRoute: false },
+    { label: "Acessar Plataforma", href: "https://smartdrillpro.vercel.app", isRoute: false, external: true },
   ],
-  academy: [
-    { label: "Cursos", href: "/#academy", isRoute: false },
-    { label: "Manuais Técnicos", href: "/#academy", isRoute: false },
-    { label: "Ferramentas", href: "/#academy", isRoute: false },
+  biblioteca: [
+    { label: "E-books Premium", href: "/biblioteca", isRoute: true },
+    { label: "Masterclasses", href: "/biblioteca", isRoute: true },
+    { label: "Templates & Planilhas", href: "/biblioteca", isRoute: true },
   ],
   empresa: [
     { label: "Sobre Nós", href: "/#sobre", isRoute: false },
-    { label: "Contato", href: "/#contato", isRoute: false },
+    { label: "Contato", href: "/contato", isRoute: true },
   ],
 };
 
 const socialLinks = [
   { icon: Instagram, href: "https://instagram.com/minerattum", label: "Instagram" },
-  { icon: Linkedin, href: "#", label: "LinkedIn" },
-  { icon: Youtube, href: "#", label: "YouTube" },
+  { icon: Linkedin, href: "https://linkedin.com/company/minerattum", label: "LinkedIn" },
 ];
 
 export const Footer = () => {
@@ -36,7 +35,8 @@ export const Footer = () => {
               <img 
                 src={minerattumLogo} 
                 alt="Minerattum" 
-                className="h-9 w-auto brightness-0 invert"
+                className="h-9 w-auto"
+                style={{ filter: 'brightness(0) saturate(100%) invert(55%) sepia(98%) saturate(456%) hue-rotate(176deg) brightness(96%) contrast(101%)' }}
               />
               <span className="font-semibold text-lg text-foreground">Minerattum</span>
             </Link>
@@ -66,6 +66,10 @@ export const Footer = () => {
                       <Link to={link.href} className="text-muted-foreground hover:text-primary transition-colors text-sm">
                         {link.label}
                       </Link>
+                    ) : 'external' in link && link.external ? (
+                      <a href={link.href} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors text-sm">
+                        {link.label}
+                      </a>
                     ) : (
                       <a href={link.href} className="text-muted-foreground hover:text-primary transition-colors text-sm">
                         {link.label}
