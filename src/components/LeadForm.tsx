@@ -5,25 +5,83 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { z } from "zod";
+
+const leadSchema = z.object({
+  name: z.string().trim().min(2, "Nome deve ter no mínimo 2 caracteres").max(100),
+  email: z.string().trim().email("E-mail inválido").max(255),
+  company: z.string().trim().max(100).optional(),
+  phone: z.string().trim().max(20).optional(),
+  message: z.string().trim().min(10, "Mensagem deve ter no mínimo 10 caracteres").max(1000),
+});
 
 export const LeadForm = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    company: "",
+    phone: "",
+    message: "",
+  });
   const { toast } = useToast();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    if (errors[e.target.name]) {
+      setErrors({ ...errors, [e.target.name]: "" });
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
     
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    setIsLoading(false);
-    setIsSubmitted(true);
-    toast({
-      title: "Mensagem enviada!",
-      description: "Entraremos em contato em breve.",
-    });
+    try {
+      const validatedData = leadSchema.parse(formData);
+      setErrors({});
+      setIsLoading(true);
+      
+      const { error } = await supabase
+        .from("leads")
+        .insert({
+          name: validatedData.name,
+          email: validatedData.email,
+          company: validatedData.company || null,
+          phone: validatedData.phone || null,
+          message: validatedData.message,
+          source: "website",
+        });
+
+      if (error) throw error;
+      
+      setIsLoading(false);
+      setIsSubmitted(true);
+      toast({
+        title: "Mensagem enviada!",
+        description: "Entraremos em contato em breve.",
+      });
+    } catch (error) {
+      setIsLoading(false);
+      if (error instanceof z.ZodError) {
+        const newErrors: Record<string, string> = {};
+        error.errors.forEach((err) => {
+          if (err.path[0]) {
+            newErrors[err.path[0] as string] = err.message;
+          }
+        });
+        setErrors(newErrors);
+      } else {
+        console.error("Error submitting lead:", error);
+        toast({
+          title: "Erro ao enviar",
+          description: "Tente novamente mais tarde.",
+          variant: "destructive",
+        });
+      }
+    }
   };
 
   if (isSubmitted) {
@@ -57,22 +115,26 @@ export const LeadForm = () => {
           <Input
             id="name"
             name="name"
-            required
+            value={formData.name}
+            onChange={handleChange}
             placeholder="Seu nome"
             className="bg-background/50 border-border/50"
           />
+          {errors.name && <p className="text-destructive text-sm mt-1">{errors.name}</p>}
         </div>
         <div>
           <label htmlFor="company" className="block text-sm font-medium text-foreground mb-2">
-            Empresa *
+            Empresa
           </label>
           <Input
             id="company"
             name="company"
-            required
+            value={formData.company}
+            onChange={handleChange}
             placeholder="Nome da empresa"
             className="bg-background/50 border-border/50"
           />
+          {errors.company && <p className="text-destructive text-sm mt-1">{errors.company}</p>}
         </div>
       </div>
       
@@ -85,10 +147,12 @@ export const LeadForm = () => {
             id="email"
             name="email"
             type="email"
-            required
+            value={formData.email}
+            onChange={handleChange}
             placeholder="seu@email.com"
             className="bg-background/50 border-border/50"
           />
+          {errors.email && <p className="text-destructive text-sm mt-1">{errors.email}</p>}
         </div>
         <div>
           <label htmlFor="phone" className="block text-sm font-medium text-foreground mb-2">
@@ -98,9 +162,12 @@ export const LeadForm = () => {
             id="phone"
             name="phone"
             type="tel"
+            value={formData.phone}
+            onChange={handleChange}
             placeholder="(00) 00000-0000"
             className="bg-background/50 border-border/50"
           />
+          {errors.phone && <p className="text-destructive text-sm mt-1">{errors.phone}</p>}
         </div>
       </div>
 
@@ -111,11 +178,13 @@ export const LeadForm = () => {
         <Textarea
           id="message"
           name="message"
-          required
+          value={formData.message}
+          onChange={handleChange}
           placeholder="Como podemos ajudar sua operação?"
           rows={4}
           className="bg-background/50 border-border/50"
         />
+        {errors.message && <p className="text-destructive text-sm mt-1">{errors.message}</p>}
       </div>
 
       <Button
