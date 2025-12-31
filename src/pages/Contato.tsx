@@ -143,7 +143,7 @@ const Contato = () => {
                   Acesse nossa plataforma e veja como podemos otimizar sua operação.
                 </p>
                 <a
-                  href="https://smartdrillpro.vercel.app"
+                  href="https://smartdrillpro.vercel.app/signup"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-primary font-medium hover:underline"
