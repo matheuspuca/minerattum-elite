@@ -29,14 +29,12 @@ export const Navbar = () => {
         <nav className="flex items-center justify-between h-16 md:h-18">
           {/* Logo */}
           <Link to="/" className="flex items-center">
-            <div className="bg-primary/10 p-2 rounded-lg border border-primary/30">
-              <img 
-                src={minerattumLogo} 
-                alt="Minerattum" 
-                className="h-12 md:h-14 w-auto"
-                style={{ filter: 'brightness(0) saturate(100%) invert(55%) sepia(98%) saturate(456%) hue-rotate(176deg) brightness(96%) contrast(101%)' }}
-              />
-            </div>
+            <img 
+              src={minerattumLogo} 
+              alt="Minerattum" 
+              className="h-16 md:h-20 w-auto"
+              style={{ filter: 'brightness(0) saturate(100%) invert(55%) sepia(98%) saturate(456%) hue-rotate(176deg) brightness(96%) contrast(101%)' }}
+            />
           </Link>
 
           {/* Desktop Navigation */}
