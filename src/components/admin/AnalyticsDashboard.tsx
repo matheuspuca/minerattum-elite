@@ -1,6 +1,8 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { TrendingUp, Users, Calendar, Building, Clock, Target, Percent } from "lucide-react";
+import { TrendingUp, Users, Calendar, Building, Clock, Target, Percent, CalendarDays } from "lucide-react";
+import { format, subDays, isAfter, isBefore, startOfDay, endOfDay } from "date-fns";
+import { ptBR } from "date-fns/locale";
 import {
   LineChart,
   Line,
@@ -15,6 +17,9 @@ import {
   BarChart,
   Bar,
 } from "recharts";
+import { Button } from "@/components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 
 interface Lead {
   id: string;
@@ -52,40 +57,63 @@ const STATUS_LABELS: Record<string, string> = {
 };
 
 const AnalyticsDashboard = ({ leads }: AnalyticsDashboardProps) => {
-  // Leads por dia (últimos 30 dias)
+  const [dateRange, setDateRange] = useState<{ from: Date | undefined; to: Date | undefined }>({
+    from: subDays(new Date(), 30),
+    to: new Date(),
+  });
+
+  // Filter leads by date range
+  const filteredLeads = useMemo(() => {
+    if (!dateRange.from && !dateRange.to) return leads;
+    
+    return leads.filter(lead => {
+      const leadDate = new Date(lead.created_at);
+      const afterStart = !dateRange.from || isAfter(leadDate, startOfDay(dateRange.from));
+      const beforeEnd = !dateRange.to || isBefore(leadDate, endOfDay(dateRange.to));
+      return afterStart && beforeEnd;
+    });
+  }, [leads, dateRange]);
+
+  // Leads por dia (período selecionado)
   const leadsPerDay = useMemo(() => {
-    const last30Days = Array.from({ length: 30 }, (_, i) => {
-      const date = new Date();
-      date.setDate(date.getDate() - (29 - i));
+    const days = dateRange.from && dateRange.to 
+      ? Math.ceil((dateRange.to.getTime() - dateRange.from.getTime()) / (1000 * 60 * 60 * 24)) + 1
+      : 30;
+    
+    const startDate = dateRange.from || subDays(new Date(), 29);
+    
+    const daysArray = Array.from({ length: Math.min(days, 60) }, (_, i) => {
+      const date = new Date(startDate);
+      date.setDate(date.getDate() + i);
       return date.toISOString().split("T")[0];
     });
 
-    const counts = leads.reduce((acc, lead) => {
+    const counts = filteredLeads.reduce((acc, lead) => {
       const date = lead.created_at.split("T")[0];
       acc[date] = (acc[date] || 0) + 1;
       return acc;
     }, {} as Record<string, number>);
 
-    return last30Days.map((date) => ({
+    return daysArray.map((date) => ({
       date: new Date(date).toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" }),
       leads: counts[date] || 0,
     }));
-  }, [leads]);
+  }, [filteredLeads, dateRange]);
 
   // Leads por fonte
   const leadsBySource = useMemo(() => {
-    const sources = leads.reduce((acc, lead) => {
+    const sources = filteredLeads.reduce((acc, lead) => {
       const source = lead.source || "Website";
       acc[source] = (acc[source] || 0) + 1;
       return acc;
     }, {} as Record<string, number>);
 
     return Object.entries(sources).map(([name, value]) => ({ name, value }));
-  }, [leads]);
+  }, [filteredLeads]);
 
   // Leads por status
   const leadsByStatus = useMemo(() => {
-    const statuses = leads.reduce((acc, lead) => {
+    const statuses = filteredLeads.reduce((acc, lead) => {
       const status = lead.status || "new";
       acc[status] = (acc[status] || 0) + 1;
       return acc;
@@ -96,11 +124,11 @@ const AnalyticsDashboard = ({ leads }: AnalyticsDashboardProps) => {
       value: count,
       status,
     }));
-  }, [leads]);
+  }, [filteredLeads]);
 
   // Taxa de conversão por fonte
   const conversionBySource = useMemo(() => {
-    const sourceStats = leads.reduce((acc, lead) => {
+    const sourceStats = filteredLeads.reduce((acc, lead) => {
       const source = lead.source || "Website";
       if (!acc[source]) {
         acc[source] = { total: 0, closed: 0 };
@@ -118,38 +146,36 @@ const AnalyticsDashboard = ({ leads }: AnalyticsDashboardProps) => {
       closed: stats.closed,
       rate: stats.total > 0 ? Math.round((stats.closed / stats.total) * 100) : 0,
     }));
-  }, [leads]);
+  }, [filteredLeads]);
 
   // Tempo médio de conversão (dias até fechamento)
   const avgConversionTime = useMemo(() => {
-    const closedLeads = leads.filter(l => l.status === "closed");
+    const closedLeads = filteredLeads.filter(l => l.status === "closed");
     if (closedLeads.length === 0) return 0;
 
-    // Simulando tempo médio baseado na diferença entre created_at e uma data estimada
-    // Em um cenário real, você teria um campo closed_at
     const now = new Date();
     const totalDays = closedLeads.reduce((sum, lead) => {
       const createdDate = new Date(lead.created_at);
       const daysDiff = Math.floor((now.getTime() - createdDate.getTime()) / (1000 * 60 * 60 * 24));
-      return sum + Math.min(daysDiff, 30); // Cap em 30 dias
+      return sum + Math.min(daysDiff, 30);
     }, 0);
 
     return Math.round(totalDays / closedLeads.length);
-  }, [leads]);
+  }, [filteredLeads]);
 
   // Leads com empresa vs sem empresa
   const leadsWithCompany = useMemo(() => {
-    const withCompany = leads.filter((l) => l.company).length;
-    const withoutCompany = leads.length - withCompany;
+    const withCompany = filteredLeads.filter((l) => l.company).length;
+    const withoutCompany = filteredLeads.length - withCompany;
     return [
       { name: "Com Empresa", value: withCompany },
       { name: "Sem Empresa", value: withoutCompany },
     ];
-  }, [leads]);
+  }, [filteredLeads]);
 
   // Leads por mês
   const leadsByMonth = useMemo(() => {
-    const months = leads.reduce((acc, lead) => {
+    const months = filteredLeads.reduce((acc, lead) => {
       const month = new Date(lead.created_at).toLocaleDateString("pt-BR", { month: "short", year: "2-digit" });
       acc[month] = (acc[month] || 0) + 1;
       return acc;
@@ -158,7 +184,7 @@ const AnalyticsDashboard = ({ leads }: AnalyticsDashboardProps) => {
     return Object.entries(months)
       .map(([month, count]) => ({ month, count }))
       .slice(-6);
-  }, [leads]);
+  }, [filteredLeads]);
 
   // Estatísticas
   const stats = useMemo(() => {
@@ -166,23 +192,88 @@ const AnalyticsDashboard = ({ leads }: AnalyticsDashboardProps) => {
     const thisWeek = new Date();
     thisWeek.setDate(thisWeek.getDate() - 7);
     
-    const todayLeads = leads.filter((l) => l.created_at.startsWith(today)).length;
-    const weekLeads = leads.filter((l) => new Date(l.created_at) >= thisWeek).length;
-    const closedLeads = leads.filter((l) => l.status === "closed").length;
-    const conversionRate = leads.length > 0 ? ((closedLeads / leads.length) * 100).toFixed(1) : 0;
+    const todayLeads = filteredLeads.filter((l) => l.created_at.startsWith(today)).length;
+    const weekLeads = filteredLeads.filter((l) => new Date(l.created_at) >= thisWeek).length;
+    const closedLeads = filteredLeads.filter((l) => l.status === "closed").length;
+    const conversionRate = filteredLeads.length > 0 ? ((closedLeads / filteredLeads.length) * 100).toFixed(1) : 0;
 
     return {
-      total: leads.length,
+      total: filteredLeads.length,
       today: todayLeads,
       week: weekLeads,
       conversionRate,
       avgConversionTime,
       closedLeads,
     };
-  }, [leads, avgConversionTime]);
+  }, [filteredLeads, avgConversionTime]);
 
   return (
     <div className="space-y-8">
+      {/* Date Range Filter */}
+      <div className="flex items-center gap-4 flex-wrap">
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button variant="outline" className="gap-2">
+              <CalendarDays className="w-4 h-4" />
+              {dateRange.from ? (
+                dateRange.to ? (
+                  <>
+                    {format(dateRange.from, "dd/MM/yyyy", { locale: ptBR })} -{" "}
+                    {format(dateRange.to, "dd/MM/yyyy", { locale: ptBR })}
+                  </>
+                ) : (
+                  format(dateRange.from, "dd/MM/yyyy", { locale: ptBR })
+                )
+              ) : (
+                "Selecionar período"
+              )}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0" align="start">
+            <CalendarComponent
+              initialFocus
+              mode="range"
+              defaultMonth={dateRange.from}
+              selected={dateRange}
+              onSelect={(range) => setDateRange({ from: range?.from, to: range?.to })}
+              numberOfMonths={2}
+              locale={ptBR}
+            />
+          </PopoverContent>
+        </Popover>
+        
+        <div className="flex gap-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setDateRange({ from: subDays(new Date(), 7), to: new Date() })}
+          >
+            7 dias
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setDateRange({ from: subDays(new Date(), 30), to: new Date() })}
+          >
+            30 dias
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setDateRange({ from: subDays(new Date(), 90), to: new Date() })}
+          >
+            90 dias
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setDateRange({ from: undefined, to: undefined })}
+          >
+            Todos
+          </Button>
+        </div>
+      </div>
+
       {/* Stats Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-6 gap-4">
         <motion.div

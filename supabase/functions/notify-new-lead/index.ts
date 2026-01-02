@@ -34,8 +34,9 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     // Send notification to commercial email
+    // IMPORTANTE: Configure o domínio minerattum.com no Resend (https://resend.com/domains)
     const notificationEmail = {
-      from: "Minerattum Site <onboarding@resend.dev>",
+      from: "Minerattum Site <contato@minerattum.com>",
       to: ["comercial@minerattum.com"],
       subject: `🔔 Novo Lead: ${leadData.name}`,
       html: `
@@ -117,7 +118,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Also send confirmation email to the lead
     const confirmationEmail = {
-      from: "Minerattum <onboarding@resend.dev>",
+      from: "Minerattum <contato@minerattum.com>",
       to: [leadData.email],
       subject: "Recebemos sua mensagem - Minerattum",
       html: `

@@ -12,7 +12,7 @@ import { SegmentationHeatmap } from "@/components/admin/SegmentationHeatmap";
 import { FunnelAnalytics } from "@/components/admin/FunnelAnalytics";
 import EmailMarketing from "@/components/admin/EmailMarketing";
 import AnalyticsDashboard from "@/components/admin/AnalyticsDashboard";
-import { Lead, LeadStatus, TopicInterest, FunnelStep } from "@/components/admin/types";
+import { Lead, LeadStatus } from "@/components/admin/types";
 import { Button } from "@/components/ui/button";
 import { Home } from "lucide-react";
 
@@ -142,16 +142,37 @@ const Admin = () => {
   };
 
   const updateLeadStatus = async (id: string, status: LeadStatus) => {
+    const lead = leads.find(l => l.id === id);
+    const oldStatus = lead?.status || "new";
+    
     try {
       const { error } = await supabase
         .from("leads")
         .update({ status, last_activity: new Date().toISOString() })
         .eq("id", id);
       if (error) throw error;
+      
       setLeads(leads.map((lead) => 
         lead.id === id ? { ...lead, status, last_activity: new Date().toISOString() } : lead
       ));
       toast({ title: "Status atualizado" });
+      
+      // Send automated email based on status change
+      if (lead && oldStatus !== status) {
+        try {
+          await supabase.functions.invoke("send-status-email", {
+            body: {
+              leadEmail: lead.email,
+              leadName: lead.name,
+              oldStatus,
+              newStatus: status,
+            },
+          });
+          console.log("Status email sent for:", lead.email);
+        } catch (emailError) {
+          console.error("Failed to send status email:", emailError);
+        }
+      }
     } catch (error) {
       toast({ title: "Erro ao atualizar status", variant: "destructive" });
     }
@@ -191,21 +212,6 @@ const Admin = () => {
     return { newLeadsToday, activeTrials, ebookDownloads, conversionRate };
   }, [leads]);
 
-  // Mock topic interests
-  const topicInterests: TopicInterest[] = [
-    { topic: "drilling", count: 45, percentage: 35 },
-    { topic: "blasting", count: 30, percentage: 23 },
-    { topic: "ia", count: 35, percentage: 27 },
-    { topic: "diesel", count: 20, percentage: 15 },
-  ];
-
-  // Mock funnel steps
-  const funnelSteps: FunnelStep[] = [
-    { name: "eBook Download", count: 150, dropoff: 40 },
-    { name: "Email Opened", count: 90, dropoff: 33 },
-    { name: "Link Clicked", count: 60, dropoff: 50 },
-    { name: "Demo Request", count: 30, dropoff: 0 },
-  ];
 
   if (authLoading) {
     return (
@@ -262,8 +268,8 @@ const Admin = () => {
 
               <div className="grid lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2 space-y-6">
-                  <SegmentationHeatmap data={topicInterests} />
-                  <FunnelAnalytics steps={funnelSteps} />
+                  <SegmentationHeatmap leads={leads} />
+                  <FunnelAnalytics leads={leads} />
                 </div>
                 <div>
                   <HotLeadsPanel leads={leads} />
@@ -305,12 +311,12 @@ const Admin = () => {
           {activeTab === "content" && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
               <div className="mb-8">
-                <h1 className="text-3xl font-bold text-foreground mb-2">Content Performance</h1>
-                <p className="text-muted-foreground">Análise de desempenho de conteúdo</p>
+                <h1 className="text-3xl font-bold text-foreground mb-2">Análise de Leads</h1>
+                <p className="text-muted-foreground">Segmentação e funil de conversão baseado em dados reais</p>
               </div>
               <div className="grid lg:grid-cols-2 gap-6">
-                <SegmentationHeatmap data={topicInterests} />
-                <FunnelAnalytics steps={funnelSteps} />
+                <SegmentationHeatmap leads={leads} />
+                <FunnelAnalytics leads={leads} />
               </div>
             </motion.div>
           )}
