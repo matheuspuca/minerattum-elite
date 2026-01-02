@@ -175,26 +175,36 @@
   }
 
   /* 3D Book Styles */
+  @keyframes book-intro {
+    0% {
+      transform: rotateY(-30deg) rotateX(5deg);
+    }
+    50% {
+      transform: rotateY(10deg) rotateX(-2deg);
+    }
+    100% {
+      transform: rotateY(-15deg) rotateX(3deg);
+    }
+  }
+
   .book-3d-container {
     perspective: 1000px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
+    width: 180px;
+    height: 260px;
   }
 
   .book-3d {
     position: relative;
-    width: 160px;
-    height: 220px;
+    width: 100%;
+    height: 100%;
     transform-style: preserve-3d;
-    transform: rotateY(-15deg);
-    transition: transform 0.4s ease;
+    transform: rotateY(-15deg) rotateX(3deg);
+    transition: transform 0.5s ease-out;
+    animation: book-intro 1.5s ease-out forwards;
   }
 
   .book-3d-container:hover .book-3d {
-    transform: rotateY(-25deg);
+    transform: rotateY(-25deg) rotateX(5deg);
   }
 
   .book-front {
@@ -210,6 +220,37 @@
       inset -2px 0 10px rgba(0, 0, 0, 0.1);
   }
 
+  /* Shine effect overlay */
+  .book-front::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.15) 50%,
+      transparent 100%
+    );
+    transform: skewX(-25deg);
+    animation: book-shine 3s ease-in-out infinite;
+    animation-delay: 1s;
+  }
+
+  @keyframes book-shine {
+    0% {
+      left: -100%;
+    }
+    20% {
+      left: 150%;
+    }
+    100% {
+      left: 150%;
+    }
+  }
+
   .book-spine {
     position: absolute;
     left: 0;
@@ -221,6 +262,7 @@
       hsl(var(--muted)) 100%);
     transform: rotateY(90deg) translateZ(-15px) translateX(-15px);
     border-radius: 2px 0 0 2px;
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.05);
   }
 
   .book-pages {
@@ -259,5 +301,10 @@
     height: 30px;
     background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.35) 0%, transparent 70%);
     filter: blur(5px);
+    transition: opacity 0.3s ease;
+  }
+
+  .book-3d-container:hover .book-shadow {
+    opacity: 0.8;
   }
 }
