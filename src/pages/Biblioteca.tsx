@@ -40,7 +40,7 @@ const ebooks = [
     price: "R$ 129,99",
     installments: "em até 12x*",
     badge: "Mais Vendido",
-    whatsappMessage: "Olá! Gostaria de adquirir o e-book 'Como iniciar uma pequena mineração legalizada'.",
+    purchaseLink: "https://kiwify.app/Ea0Ihrb",
   },
   {
     id: 2,
@@ -51,7 +51,7 @@ const ebooks = [
     price: "R$ 39,90",
     badge: "Preço Promocional",
     badgeColor: "bg-accent",
-    whatsappMessage: "Olá! Gostaria de adquirir o e-book 'IA na Mineração'.",
+    purchaseLink: "https://pay.kiwify.com.br/ARc8267",
   },
   {
     id: 3,
@@ -62,7 +62,7 @@ const ebooks = [
     originalPrice: "R$ 897,00",
     price: "R$ 99,99",
     installments: "em até 12x*",
-    whatsappMessage: "Olá! Gostaria de adquirir o e-book 'Consultoria em Mineração Avançada'.",
+    purchaseLink: "https://pay.kiwify.com.br/MAiSfbr",
   },
 ];
 
@@ -206,7 +206,7 @@ export default function Biblioteca() {
                       asChild
                     >
                       <a 
-                        href={`${whatsappBase}${encodeURIComponent(ebook.whatsappMessage)}`} 
+                        href={ebook.purchaseLink} 
                         target="_blank" 
                         rel="noopener noreferrer"
                       >
