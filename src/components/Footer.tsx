@@ -1,6 +1,6 @@
 import { Linkedin, Instagram, Mail, Phone, Lock, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
-import minerattumLogo from "@/assets/minerattum-logo-main.png";
+import minerattumIcon from "@/assets/minerattum-icon.png";
 
 const footerLinks = {
   produto: [
@@ -31,14 +31,13 @@ export const Footer = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
-            <Link to="/" className="flex items-center gap-3 mb-4">
+            <Link to="/" className="flex items-center gap-2 mb-4">
               <img 
-                src={minerattumLogo} 
+                src={minerattumIcon} 
                 alt="Minerattum" 
-                className="h-8 w-auto"
-                style={{ filter: 'brightness(0) saturate(100%) invert(36%) sepia(85%) saturate(1000%) hue-rotate(175deg) brightness(95%) contrast(95%)' }}
+                className="h-7 w-auto"
               />
-              <span className="font-semibold text-lg text-foreground">Minerattum</span>
+              <span className="font-sans font-semibold text-lg text-foreground">Minerattum</span>
             </Link>
             <p className="text-muted-foreground text-sm mb-4">
               Tecnologia e educação para a mineração do futuro.

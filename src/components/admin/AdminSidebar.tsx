@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import minerattumLogo from "@/assets/minerattum-logo-main.png";
+import minerattumIcon from "@/assets/minerattum-icon.png";
 
 interface AdminSidebarProps {
   collapsed: boolean;
@@ -70,16 +70,16 @@ export const AdminSidebar = ({ collapsed, onToggle, onSignOut }: AdminSidebarPro
     >
       {/* Logo */}
       <div className="p-4 border-b border-sidebar-border flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-3 overflow-hidden">
+        <Link to="/" className="flex items-center gap-2 overflow-hidden">
           <img 
-            src={minerattumLogo} 
+            src={minerattumIcon} 
             alt="Minerattum" 
             className={cn(
               "transition-all duration-300",
-              collapsed ? "h-8 w-8 object-contain" : "h-10"
+              collapsed ? "h-7 w-7 object-contain" : "h-8"
             )}
-            style={{ filter: 'brightness(0) saturate(100%) invert(36%) sepia(85%) saturate(1000%) hue-rotate(175deg) brightness(95%) contrast(95%)' }}
           />
+          {!collapsed && <span className="font-sans font-semibold text-foreground">Minerattum</span>}
         </Link>
         <Button
           variant="ghost"
