@@ -124,7 +124,8 @@ const Auth = () => {
             <img
               src={minerattumLogo}
               alt="Minerattum"
-              className="h-16 w-auto mx-auto mb-4"
+              className="h-10 w-auto mx-auto mb-4"
+              style={{ filter: 'brightness(0) saturate(100%) invert(36%) sepia(85%) saturate(1000%) hue-rotate(175deg) brightness(95%) contrast(95%)' }}
             />
             <h1 className="text-2xl font-bold text-foreground">
               {isLogin ? "Entrar" : "Criar Conta"}

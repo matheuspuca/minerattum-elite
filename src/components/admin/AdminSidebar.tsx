@@ -76,8 +76,9 @@ export const AdminSidebar = ({ collapsed, onToggle, onSignOut }: AdminSidebarPro
             alt="Minerattum" 
             className={cn(
               "transition-all duration-300",
-              collapsed ? "h-10 w-10 object-contain" : "h-12"
+              collapsed ? "h-8 w-8 object-contain" : "h-10"
             )}
+            style={{ filter: 'brightness(0) saturate(100%) invert(36%) sepia(85%) saturate(1000%) hue-rotate(175deg) brightness(95%) contrast(95%)' }}
           />
         </Link>
         <Button

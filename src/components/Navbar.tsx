@@ -32,7 +32,8 @@ export const Navbar = () => {
             <img 
               src={minerattumLogo} 
               alt="Minerattum" 
-              className="h-20 md:h-28 w-auto"
+              className="h-10 md:h-12 w-auto"
+              style={{ filter: 'brightness(0) saturate(100%) invert(36%) sepia(85%) saturate(1000%) hue-rotate(175deg) brightness(95%) contrast(95%)' }}
             />
           </Link>
 
