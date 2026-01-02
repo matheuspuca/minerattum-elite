@@ -35,9 +35,9 @@ export const Footer = () => {
               <img 
                 src={minerattumIcon} 
                 alt="Minerattum" 
-                className="h-7 w-auto"
+                className="h-7 sm:h-8 w-auto"
               />
-              <span className="font-sans font-semibold text-lg text-foreground">Minerattum</span>
+              <span className="font-sans font-semibold text-lg sm:text-xl text-foreground tracking-tight">Minerattum</span>
             </Link>
             <p className="text-muted-foreground text-sm mb-4">
               Tecnologia e educação para a mineração do futuro.

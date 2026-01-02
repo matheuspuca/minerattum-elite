@@ -125,9 +125,9 @@ const Auth = () => {
               <img
                 src={minerattumIcon}
                 alt="Minerattum"
-                className="h-10 w-auto"
+                className="h-10 sm:h-12 w-auto"
               />
-              <span className="font-sans font-semibold text-xl text-foreground">Minerattum</span>
+              <span className="font-sans font-semibold text-xl sm:text-2xl text-foreground tracking-tight">Minerattum</span>
             </div>
             <h1 className="text-2xl font-bold text-foreground">
               {isLogin ? "Entrar" : "Criar Conta"}
