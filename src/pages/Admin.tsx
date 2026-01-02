@@ -48,14 +48,12 @@ const Admin = () => {
 
       if (error) throw error;
       
-      // Extend leads with mock CRM data
-      const extendedLeads: Lead[] = (data || []).map((lead, index) => ({
+      // Use real data from database
+      const extendedLeads: Lead[] = (data || []).map((lead) => ({
         ...lead,
-        score: Math.floor(Math.random() * 60) + 40,
-        status: (["new", "contacted", "negotiation", "closed", "lost"] as LeadStatus[])[
-          Math.floor(Math.random() * 5)
-        ],
-        last_activity: lead.created_at,
+        score: lead.score ?? 50,
+        status: (lead.status as LeadStatus) ?? "new",
+        last_activity: lead.last_activity ?? lead.created_at,
       }));
       
       setLeads(extendedLeads);
@@ -78,6 +76,38 @@ const Admin = () => {
       toast({ title: "Lead excluído" });
     } catch (error) {
       toast({ title: "Erro ao excluir", variant: "destructive" });
+    }
+  };
+
+  const updateLeadStatus = async (id: string, status: LeadStatus) => {
+    try {
+      const { error } = await supabase
+        .from("leads")
+        .update({ status, last_activity: new Date().toISOString() })
+        .eq("id", id);
+      if (error) throw error;
+      setLeads(leads.map((lead) => 
+        lead.id === id ? { ...lead, status, last_activity: new Date().toISOString() } : lead
+      ));
+      toast({ title: "Status atualizado" });
+    } catch (error) {
+      toast({ title: "Erro ao atualizar status", variant: "destructive" });
+    }
+  };
+
+  const updateLeadScore = async (id: string, score: number) => {
+    try {
+      const { error } = await supabase
+        .from("leads")
+        .update({ score, last_activity: new Date().toISOString() })
+        .eq("id", id);
+      if (error) throw error;
+      setLeads(leads.map((lead) => 
+        lead.id === id ? { ...lead, score, last_activity: new Date().toISOString() } : lead
+      ));
+      toast({ title: "Score atualizado" });
+    } catch (error) {
+      toast({ title: "Erro ao atualizar score", variant: "destructive" });
     }
   };
 
@@ -189,6 +219,8 @@ const Admin = () => {
                 loading={loading}
                 onRefresh={fetchLeads}
                 onDelete={deleteLead}
+                onUpdateStatus={updateLeadStatus}
+                onUpdateScore={updateLeadScore}
               />
             </motion.div>
           )}
