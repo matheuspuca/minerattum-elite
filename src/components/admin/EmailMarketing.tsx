@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Mail, Send } from "lucide-react";
+import { useState, useRef } from "react";
+import { Mail, Send, Paperclip, X, FileImage, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -19,11 +19,19 @@ interface EmailMarketingProps {
   leads: Lead[];
 }
 
+interface AttachmentFile {
+  file: File;
+  preview: string;
+  base64: string;
+}
+
 const EmailMarketing = ({ leads }: EmailMarketingProps) => {
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
   const [selectedLeads, setSelectedLeads] = useState<string[]>([]);
   const [sending, setSending] = useState(false);
+  const [attachments, setAttachments] = useState<AttachmentFile[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
   const toggleLead = (email: string) => {
@@ -38,6 +46,72 @@ const EmailMarketing = ({ leads }: EmailMarketingProps) => {
     } else {
       setSelectedLeads(leads.map((l) => l.email));
     }
+  };
+
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'application/pdf'];
+    const maxSize = 5 * 1024 * 1024; // 5MB
+
+    for (const file of Array.from(files)) {
+      if (!allowedTypes.includes(file.type)) {
+        toast({
+          title: "Tipo não permitido",
+          description: `${file.name}: Apenas imagens (JPG, PNG, GIF, WebP) e PDFs são permitidos.`,
+          variant: "destructive",
+        });
+        continue;
+      }
+
+      if (file.size > maxSize) {
+        toast({
+          title: "Arquivo muito grande",
+          description: `${file.name}: O tamanho máximo é 5MB.`,
+          variant: "destructive",
+        });
+        continue;
+      }
+
+      // Convert to base64
+      const base64 = await fileToBase64(file);
+      const preview = file.type.startsWith('image/') 
+        ? URL.createObjectURL(file) 
+        : '';
+
+      setAttachments(prev => [...prev, { file, preview, base64 }]);
+    }
+
+    // Reset input
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        const result = reader.result as string;
+        // Remove the data:mime;base64, prefix
+        const base64 = result.split(',')[1];
+        resolve(base64);
+      };
+      reader.onerror = error => reject(error);
+    });
+  };
+
+  const removeAttachment = (index: number) => {
+    setAttachments(prev => {
+      const newAttachments = [...prev];
+      if (newAttachments[index].preview) {
+        URL.revokeObjectURL(newAttachments[index].preview);
+      }
+      newAttachments.splice(index, 1);
+      return newAttachments;
+    });
   };
 
   const handleSend = async () => {
@@ -76,11 +150,18 @@ const EmailMarketing = ({ leads }: EmailMarketingProps) => {
         </div>
       `;
 
+      const emailAttachments = attachments.map(att => ({
+        filename: att.file.name,
+        content: att.base64,
+        contentType: att.file.type,
+      }));
+
       const { data, error } = await supabase.functions.invoke("send-marketing-email", {
         body: {
           recipients: selectedLeads,
           subject,
           htmlContent,
+          attachments: emailAttachments.length > 0 ? emailAttachments : undefined,
         },
       });
 
@@ -94,6 +175,7 @@ const EmailMarketing = ({ leads }: EmailMarketingProps) => {
         setSubject("");
         setMessage("");
         setSelectedLeads([]);
+        setAttachments([]);
       } else {
         throw new Error(data.error || "Erro ao enviar emails");
       }
@@ -131,10 +213,74 @@ const EmailMarketing = ({ leads }: EmailMarketingProps) => {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Escreva sua mensagem..."
-              rows={8}
+              rows={6}
               className="w-full px-4 py-2 bg-background/50 border border-border/50 rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
             />
           </div>
+
+          {/* Attachments Section */}
+          <div>
+            <label className="block text-sm font-medium text-foreground mb-2">Anexos</label>
+            <input
+              ref={fileInputRef}
+              type="file"
+              onChange={handleFileSelect}
+              accept="image/jpeg,image/png,image/gif,image/webp,application/pdf"
+              multiple
+              className="hidden"
+            />
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => fileInputRef.current?.click()}
+              className="w-full border-dashed"
+            >
+              <Paperclip className="w-4 h-4 mr-2" />
+              Adicionar Anexo (Imagem ou PDF)
+            </Button>
+
+            {/* Attachment Previews */}
+            {attachments.length > 0 && (
+              <div className="mt-3 space-y-2">
+                {attachments.map((att, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center gap-3 p-2 bg-muted/50 rounded-lg border border-border/50"
+                  >
+                    {att.file.type.startsWith('image/') ? (
+                      <img
+                        src={att.preview}
+                        alt={att.file.name}
+                        className="w-10 h-10 object-cover rounded"
+                      />
+                    ) : (
+                      <div className="w-10 h-10 flex items-center justify-center bg-primary/10 rounded">
+                        <FileText className="w-5 h-5 text-primary" />
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-foreground truncate">
+                        {att.file.name}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {(att.file.size / 1024).toFixed(1)} KB
+                      </p>
+                    </div>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => removeAttachment(index)}
+                      className="text-muted-foreground hover:text-destructive"
+                    >
+                      <X className="w-4 h-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
           <Button
             onClick={handleSend}
             disabled={sending}
