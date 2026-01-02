@@ -36,7 +36,7 @@ const stagger = {
   }
 };
 
-const PURCHASE_LINK = "https://kiwify.app/Ea0Ihrb";
+const PURCHASE_LINK = "https://pay.kiwify.com.br/6kQskbv";
 
 const features = [
   "Passo a passo completo para legalização",
