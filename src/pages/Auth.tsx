@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
-import minerattumLogo from "@/assets/minerattum-logo-main.png";
+import minerattumIcon from "@/assets/minerattum-icon.png";
 import { z } from "zod";
 
 const loginSchema = z.object({
@@ -121,12 +121,14 @@ const Auth = () => {
         <div className="bg-card/50 border border-border/50 rounded-2xl p-8 backdrop-blur-sm">
           {/* Logo */}
           <div className="text-center mb-8">
-            <img
-              src={minerattumLogo}
-              alt="Minerattum"
-              className="h-10 w-auto mx-auto mb-4"
-              style={{ filter: 'brightness(0) saturate(100%) invert(36%) sepia(85%) saturate(1000%) hue-rotate(175deg) brightness(95%) contrast(95%)' }}
-            />
+            <div className="flex items-center justify-center gap-2 mb-4">
+              <img
+                src={minerattumIcon}
+                alt="Minerattum"
+                className="h-10 w-auto"
+              />
+              <span className="font-sans font-semibold text-xl text-foreground">Minerattum</span>
+            </div>
             <h1 className="text-2xl font-bold text-foreground">
               {isLogin ? "Entrar" : "Criar Conta"}
             </h1>

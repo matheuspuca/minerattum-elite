@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "react-router-dom";
-import minerattumLogo from "@/assets/minerattum-logo-main.png";
+import minerattumIcon from "@/assets/minerattum-icon.png";
 
 const navLinks = [
   { label: "SmartDrill", href: "/smartdrill", highlight: true },
@@ -28,13 +28,13 @@ export const Navbar = () => {
       <div className="container mx-auto px-4">
         <nav className="flex items-center justify-between h-14 md:h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center">
+          <Link to="/" className="flex items-center gap-2">
             <img 
-              src={minerattumLogo} 
+              src={minerattumIcon} 
               alt="Minerattum" 
-              className="h-10 md:h-12 w-auto"
-              style={{ filter: 'brightness(0) saturate(100%) invert(36%) sepia(85%) saturate(1000%) hue-rotate(175deg) brightness(95%) contrast(95%)' }}
+              className="h-8 md:h-9 w-auto"
             />
+            <span className="font-sans font-semibold text-lg text-foreground">Minerattum</span>
           </Link>
 
           {/* Desktop Navigation */}
