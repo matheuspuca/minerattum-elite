@@ -9,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { Book3D } from "@/components/Book3D";
 
 // Import ebook covers
 import ebookMineracaoLegalizada from "@/assets/ebook-mineracao-legalizada.jpg";
@@ -154,14 +155,9 @@ export default function Biblioteca() {
                   </div>
                 )}
                 
-                {/* Ebook Cover */}
-                <div className="relative aspect-[4/5] overflow-hidden bg-muted flex items-center justify-center p-4">
-                  <img 
-                    src={ebook.image} 
-                    alt={ebook.title}
-                    className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent pointer-events-none" />
+                {/* 3D Book Cover */}
+                <div className="relative h-72 overflow-hidden bg-gradient-to-b from-muted/50 to-muted flex items-center justify-center py-8">
+                  <Book3D coverImage={ebook.image} title={ebook.title} />
                 </div>
                 
                 {/* Content */}
