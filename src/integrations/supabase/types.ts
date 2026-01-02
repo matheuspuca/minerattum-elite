@@ -20,10 +20,13 @@ export type Database = {
           created_at: string
           email: string
           id: string
+          last_activity: string | null
           message: string | null
           name: string
           phone: string | null
+          score: number | null
           source: string | null
+          status: string | null
           updated_at: string
         }
         Insert: {
@@ -31,10 +34,13 @@ export type Database = {
           created_at?: string
           email: string
           id?: string
+          last_activity?: string | null
           message?: string | null
           name: string
           phone?: string | null
+          score?: number | null
           source?: string | null
+          status?: string | null
           updated_at?: string
         }
         Update: {
@@ -42,10 +48,13 @@ export type Database = {
           created_at?: string
           email?: string
           id?: string
+          last_activity?: string | null
           message?: string | null
           name?: string
           phone?: string | null
+          score?: number | null
           source?: string | null
+          status?: string | null
           updated_at?: string
         }
         Relationships: []

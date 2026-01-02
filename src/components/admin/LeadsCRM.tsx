@@ -36,6 +36,8 @@ interface LeadsCRMProps {
   loading: boolean;
   onRefresh: () => void;
   onDelete: (id: string) => void;
+  onUpdateStatus: (id: string, status: LeadStatus) => void;
+  onUpdateScore: (id: string, score: number) => void;
 }
 
 const statusConfig: Record<LeadStatus, { label: string; color: string }> = {
@@ -55,7 +57,7 @@ const sourceLabels: Record<string, { label: string; color: string }> = {
   demo_request: { label: "Demo Request", color: "bg-emerald/10 text-emerald" },
 };
 
-export const LeadsCRM = ({ leads, loading, onRefresh, onDelete }: LeadsCRMProps) => {
+export const LeadsCRM = ({ leads, loading, onRefresh, onDelete, onUpdateStatus, onUpdateScore }: LeadsCRMProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<LeadStatus | "all">("all");
   const [sourceFilter, setSourceFilter] = useState<string | "all">("all");
@@ -296,10 +298,29 @@ export const LeadsCRM = ({ leads, loading, onRefresh, onDelete }: LeadsCRMProps)
                       </span>
                     </div>
                   </TableCell>
-                  <TableCell>
-                    <Badge variant="outline" className={statusConfig[lead.status].color}>
-                      {statusConfig[lead.status].label}
-                    </Badge>
+                  <TableCell onClick={(e) => e.stopPropagation()}>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <button className="cursor-pointer">
+                          <Badge variant="outline" className={`${statusConfig[lead.status].color} hover:opacity-80 transition-opacity`}>
+                            {statusConfig[lead.status].label}
+                            <ChevronDown className="w-3 h-3 ml-1 inline" />
+                          </Badge>
+                        </button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="start">
+                        {Object.entries(statusConfig).map(([key, { label, color }]) => (
+                          <DropdownMenuItem 
+                            key={key} 
+                            onClick={() => onUpdateStatus(lead.id, key as LeadStatus)}
+                            className={lead.status === key ? "bg-muted" : ""}
+                          >
+                            <span className={`w-2 h-2 rounded-full mr-2 ${color.split(' ')[0]}`} />
+                            {label}
+                          </DropdownMenuItem>
+                        ))}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </TableCell>
                   <TableCell className="text-sm text-muted-foreground">
                     {format(new Date(lead.last_activity), "dd/MM/yyyy HH:mm", { locale: ptBR })}
