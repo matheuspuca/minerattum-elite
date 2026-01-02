@@ -36,6 +36,67 @@ const Admin = () => {
   useEffect(() => {
     if (user && isAdmin) {
       fetchLeads();
+      
+      // Subscribe to realtime changes
+      const channel = supabase
+        .channel('leads-realtime')
+        .on(
+          'postgres_changes',
+          {
+            event: 'INSERT',
+            schema: 'public',
+            table: 'leads'
+          },
+          (payload) => {
+            console.log('New lead received:', payload);
+            const newLead: Lead = {
+              ...payload.new as any,
+              score: (payload.new as any).score ?? 50,
+              status: ((payload.new as any).status as LeadStatus) ?? "new",
+              last_activity: (payload.new as any).last_activity ?? (payload.new as any).created_at,
+            };
+            setLeads((prev) => [newLead, ...prev]);
+            toast({
+              title: "🔔 Novo Lead!",
+              description: `${newLead.name} acabou de enviar uma mensagem`,
+            });
+          }
+        )
+        .on(
+          'postgres_changes',
+          {
+            event: 'UPDATE',
+            schema: 'public',
+            table: 'leads'
+          },
+          (payload) => {
+            const updatedLead = payload.new as any;
+            setLeads((prev) => 
+              prev.map((lead) => 
+                lead.id === updatedLead.id 
+                  ? { ...lead, ...updatedLead, status: updatedLead.status as LeadStatus }
+                  : lead
+              )
+            );
+          }
+        )
+        .on(
+          'postgres_changes',
+          {
+            event: 'DELETE',
+            schema: 'public',
+            table: 'leads'
+          },
+          (payload) => {
+            const deletedId = (payload.old as any).id;
+            setLeads((prev) => prev.filter((lead) => lead.id !== deletedId));
+          }
+        )
+        .subscribe();
+
+      return () => {
+        supabase.removeChannel(channel);
+      };
     }
   }, [user, isAdmin]);
 
