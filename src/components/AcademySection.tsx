@@ -14,6 +14,7 @@ const products = [
     tagColor: "bg-accent/10 text-accent",
     gradient: "from-accent/20 to-accent/5",
     borderColor: "hover:border-accent/40",
+    comingSoon: false,
   },
   {
     id: 2,
@@ -25,6 +26,7 @@ const products = [
     tagColor: "bg-primary/10 text-primary",
     gradient: "from-primary/20 to-primary/5",
     borderColor: "hover:border-primary/40",
+    comingSoon: true,
   },
   {
     id: 3,
@@ -36,6 +38,7 @@ const products = [
     tagColor: "bg-emerald-500/10 text-emerald-400",
     gradient: "from-emerald-500/20 to-emerald-500/5",
     borderColor: "hover:border-emerald-500/40",
+    comingSoon: true,
   },
 ];
 
@@ -81,6 +84,13 @@ export const AcademySection = () => {
               className="group h-full"
             >
               <div className={`relative h-full glass-card rounded-2xl p-6 cursor-pointer overflow-hidden border border-border/50 ${product.borderColor} transition-all duration-300 hover:shadow-xl`}>
+                {/* Coming Soon Badge */}
+                {product.comingSoon && (
+                  <div className="absolute top-4 right-4 z-20 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/30 text-amber-400 text-xs font-semibold">
+                    Em breve
+                  </div>
+                )}
+                
                 {/* Background Gradient */}
                 <div className={`absolute inset-0 bg-gradient-to-br ${product.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
                 
