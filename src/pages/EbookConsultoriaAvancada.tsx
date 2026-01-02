@@ -1,7 +1,9 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { 
   CheckCircle, 
   ArrowRight, 
+  ArrowLeft,
   Shield, 
   BookOpen,
   Star,
@@ -125,8 +127,19 @@ export default function EbookConsultoriaAvancada() {
     <div className="min-h-screen bg-background">
       <Navbar />
       
+      {/* Back Button */}
+      <div className="container px-4 pt-24 md:pt-28">
+        <Link 
+          to="/biblioteca" 
+          className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-6"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>Voltar para Biblioteca</span>
+        </Link>
+      </div>
+
       {/* Hero Section */}
-      <section className="relative pt-24 pb-16 md:pt-32 md:pb-24 overflow-hidden">
+      <section className="relative pt-8 pb-16 md:pt-12 md:pb-24 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-background to-primary/5" />
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMzYjgyZjYiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PHBhdGggZD0iTTM2IDM0djItSDI0di0yaDEyek0zNiAyNHYySDI0di0yaDEyeiIvPjwvZz48L2c+PC9zdmc+')] opacity-50" />
         
