@@ -9,7 +9,8 @@ import {
   LogOut,
   Home,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Target
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -34,7 +35,12 @@ const navItems = [
     path: "/admin?tab=leads" 
   },
   { 
-    label: "Conteúdo", 
+    label: "KPIs de Vendas", 
+    icon: Target, 
+    path: "/admin?tab=sales" 
+  },
+  { 
+    label: "Análise", 
     icon: BarChart3, 
     path: "/admin?tab=content" 
   },

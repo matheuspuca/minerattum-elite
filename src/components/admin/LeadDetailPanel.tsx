@@ -16,6 +16,7 @@ import { Badge } from "@/components/ui/badge";
 import { Lead, LeadStatus } from "./types";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { LeadNotesPanel } from "./LeadNotesPanel";
 
 interface LeadDetailPanelProps {
   lead: Lead | null;
@@ -197,6 +198,9 @@ export const LeadDetailPanel = ({ lead, onClose }: LeadDetailPanelProps) => {
               ))}
             </div>
           </div>
+
+          {/* Notes & Follow-ups */}
+          <LeadNotesPanel leadId={lead.id} leadName={lead.name} />
 
           {/* Email Sequence */}
           <div>

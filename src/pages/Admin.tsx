@@ -12,6 +12,7 @@ import { SegmentationHeatmap } from "@/components/admin/SegmentationHeatmap";
 import { FunnelAnalytics } from "@/components/admin/FunnelAnalytics";
 import EmailMarketing from "@/components/admin/EmailMarketing";
 import AnalyticsDashboard from "@/components/admin/AnalyticsDashboard";
+import { SalesKPIDashboard } from "@/components/admin/SalesKPIDashboard";
 import { Lead, LeadStatus } from "@/components/admin/types";
 import { Button } from "@/components/ui/button";
 import { Home } from "lucide-react";
@@ -318,6 +319,13 @@ const Admin = () => {
                 <SegmentationHeatmap leads={leads} />
                 <FunnelAnalytics leads={leads} />
               </div>
+            </motion.div>
+          )}
+
+          {/* Sales KPIs View */}
+          {activeTab === "sales" && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+              <SalesKPIDashboard leads={leads} />
             </motion.div>
           )}
 
