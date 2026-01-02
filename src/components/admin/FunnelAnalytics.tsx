@@ -18,7 +18,7 @@ export const FunnelAnalytics = ({ steps }: FunnelAnalyticsProps) => {
     >
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h3 className="font-semibold text-foreground">Funnel Analytics</h3>
+          <h3 className="font-semibold text-foreground">Análise de Funil</h3>
           <p className="text-sm text-muted-foreground">Da captura à conversão</p>
         </div>
       </div>
@@ -62,7 +62,7 @@ export const FunnelAnalytics = ({ steps }: FunnelAnalyticsProps) => {
                   <ArrowDown className="w-4 h-4 text-muted-foreground" />
                   <div className="flex items-center gap-1 text-xs text-destructive">
                     <TrendingDown className="w-3 h-3" />
-                    <span>-{step.dropoff}% drop-off</span>
+                    <span>-{step.dropoff}% de abandono</span>
                   </div>
                 </motion.div>
               )}
