@@ -14,6 +14,50 @@ export type Database = {
   }
   public: {
     Tables: {
+      lead_notes: {
+        Row: {
+          completed: boolean | null
+          content: string
+          created_at: string
+          follow_up_date: string | null
+          id: string
+          lead_id: string
+          note_type: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean | null
+          content: string
+          created_at?: string
+          follow_up_date?: string | null
+          id?: string
+          lead_id: string
+          note_type?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed?: boolean | null
+          content?: string
+          created_at?: string
+          follow_up_date?: string | null
+          id?: string
+          lead_id?: string
+          note_type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lead_notes_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       leads: {
         Row: {
           company: string | null
@@ -83,6 +127,39 @@ export type Database = {
           id?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      sales_goals: {
+        Row: {
+          conversions_goal: number
+          created_at: string
+          id: string
+          leads_goal: number
+          month: number
+          revenue_goal: number | null
+          updated_at: string
+          year: number
+        }
+        Insert: {
+          conversions_goal?: number
+          created_at?: string
+          id?: string
+          leads_goal?: number
+          month: number
+          revenue_goal?: number | null
+          updated_at?: string
+          year: number
+        }
+        Update: {
+          conversions_goal?: number
+          created_at?: string
+          id?: string
+          leads_goal?: number
+          month?: number
+          revenue_goal?: number | null
+          updated_at?: string
+          year?: number
         }
         Relationships: []
       }
