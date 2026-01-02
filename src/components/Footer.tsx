@@ -35,7 +35,8 @@ export const Footer = () => {
               <img 
                 src={minerattumLogo} 
                 alt="Minerattum" 
-                className="h-9 w-auto"
+                className="h-8 w-auto"
+                style={{ filter: 'brightness(0) saturate(100%) invert(36%) sepia(85%) saturate(1000%) hue-rotate(175deg) brightness(95%) contrast(95%)' }}
               />
               <span className="font-semibold text-lg text-foreground">Minerattum</span>
             </Link>
