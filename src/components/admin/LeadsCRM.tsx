@@ -7,7 +7,8 @@ import {
   ChevronDown,
   ArrowUpDown,
   RefreshCw,
-  Trash2
+  Trash2,
+  Download
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -31,6 +32,7 @@ import { LeadDetailPanel } from "./LeadDetailPanel";
 import { AddLeadModal } from "./AddLeadModal";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { useToast } from "@/hooks/use-toast";
 
 interface LeadsCRMProps {
   leads: Lead[];
@@ -65,6 +67,7 @@ export const LeadsCRM = ({ leads, loading, onRefresh, onDelete, onUpdateStatus, 
   const [scoreFilter, setScoreFilter] = useState<"all" | "hot" | "warm" | "cold">("all");
   const [sortBy, setSortBy] = useState<"date" | "score">("date");
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
+  const { toast } = useToast();
 
   const filteredLeads = useMemo(() => {
     return leads
@@ -100,6 +103,41 @@ export const LeadsCRM = ({ leads, loading, onRefresh, onDelete, onUpdateStatus, 
     if (score >= 80) return "text-amber bg-amber/20";
     if (score >= 50) return "text-primary bg-primary/20";
     return "text-muted-foreground bg-muted";
+  };
+
+  const exportToCSV = () => {
+    const headers = ["Nome", "Email", "Empresa", "Telefone", "Source", "Status", "Score", "Mensagem", "Data Criação"];
+    const csvData = filteredLeads.map(lead => [
+      lead.name,
+      lead.email,
+      lead.company || "",
+      lead.phone || "",
+      lead.source || "website",
+      statusConfig[lead.status]?.label || lead.status,
+      lead.score.toString(),
+      (lead.message || "").replace(/"/g, '""'),
+      format(new Date(lead.created_at), "dd/MM/yyyy HH:mm", { locale: ptBR })
+    ]);
+
+    const csvContent = [
+      headers.join(";"),
+      ...csvData.map(row => row.map(cell => `"${cell}"`).join(";"))
+    ].join("\n");
+
+    const blob = new Blob(["\ufeff" + csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", `leads_${format(new Date(), "yyyy-MM-dd_HH-mm")}.csv`);
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    toast({
+      title: "Exportação concluída",
+      description: `${filteredLeads.length} leads exportados para CSV`,
+    });
   };
 
   return (
@@ -201,6 +239,16 @@ export const LeadsCRM = ({ leads, loading, onRefresh, onDelete, onUpdateStatus, 
             className="border-border"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
+          </Button>
+
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={exportToCSV}
+            className="border-border"
+          >
+            <Download className="w-4 h-4 mr-2" />
+            Exportar CSV
           </Button>
 
           <AddLeadModal onLeadAdded={onRefresh} />
