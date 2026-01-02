@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/table";
 import { Lead, LeadStatus } from "./types";
 import { LeadDetailPanel } from "./LeadDetailPanel";
+import { AddLeadModal } from "./AddLeadModal";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
@@ -201,6 +202,8 @@ export const LeadsCRM = ({ leads, loading, onRefresh, onDelete, onUpdateStatus, 
           >
             <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
           </Button>
+
+          <AddLeadModal onLeadAdded={onRefresh} />
         </div>
       </div>
 
