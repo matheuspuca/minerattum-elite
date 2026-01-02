@@ -1,19 +1,19 @@
 import { motion } from "framer-motion";
 import { 
   BookOpen, 
-  FileText, 
-  Video, 
-  Download,
-  Star,
-  ArrowRight,
   CheckCircle,
   Zap,
   GraduationCap,
-  FileSpreadsheet
+  ArrowRight
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+
+// Import ebook covers
+import ebookMineracaoLegalizada from "@/assets/ebook-mineracao-legalizada.jpg";
+import ebookIAMineracao from "@/assets/ebook-ia-mineracao.jpg";
+import ebookConsultoriaAvancada from "@/assets/ebook-consultoria-avancada.png";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -28,80 +28,52 @@ const stagger = {
   }
 };
 
-const infoproducts = [
+const ebooks = [
   {
-    category: "E-books Premium",
-    icon: BookOpen,
-    items: [
-      {
-        title: "Guia Completo de Perfuração de Rochas",
-        description: "Manual técnico com 250+ páginas sobre técnicas avançadas de perfuração para desmonte.",
-        price: "R$ 197,00",
-        features: ["PDF + Atualizações", "Planilhas de cálculo", "Suporte por email"],
-        badge: "Mais Vendido",
-      },
-      {
-        title: "Gestão de Custos em Mineração",
-        description: "Metodologias práticas para controle de Capex e Opex em operações de lavra.",
-        price: "R$ 147,00",
-        features: ["PDF Interativo", "Modelos de planilha", "Cases reais"],
-      },
-      {
-        title: "Segurança em Desmonte de Rochas",
-        description: "Normas, procedimentos e boas práticas de SST para operações com explosivos.",
-        price: "R$ 127,00",
-        features: ["PDF + Checklists", "Procedimentos prontos", "Templates"],
-      },
-    ],
+    id: 1,
+    title: "Como iniciar uma pequena mineração legalizada",
+    description: "Aprenda o passo a passo completo para iniciar sua operação de mineração dentro da legalidade.",
+    image: ebookMineracaoLegalizada,
+    features: ["Licenciamento ambiental", "Aspectos legais e regulamentações", "Viabilidade econômica"],
+    originalPrice: "R$ 499,00",
+    price: "R$ 129,99",
+    installments: "em até 12x*",
+    badge: "Mais Vendido",
+    whatsappMessage: "Olá! Gostaria de adquirir o e-book 'Como iniciar uma pequena mineração legalizada'.",
   },
   {
-    category: "Masterclasses",
-    icon: Video,
-    items: [
-      {
-        title: "Masterclass: KPIs para Perfuração",
-        description: "Curso completo sobre indicadores de performance para operações de perfuração.",
-        price: "R$ 497,00",
-        features: ["12 horas de vídeo", "Material complementar", "Certificado"],
-        badge: "Novo",
-      },
-      {
-        title: "Análise de Fragmentação Avançada",
-        description: "Técnicas de análise granulométrica e otimização de malhas de perfuração.",
-        price: "R$ 397,00",
-        features: ["8 horas de vídeo", "Casos práticos", "Suporte 30 dias"],
-      },
-    ],
+    id: 2,
+    title: "IA na Mineração",
+    description: "Aprenda como a IA está transformando produtividade, segurança e lucratividade das mineradoras e descubra como aplicar isso na sua operação.",
+    image: ebookIAMineracao,
+    features: ["IA na Mineração", "Automação e IoT"],
+    price: "R$ 39,90",
+    badge: "Preço Promocional",
+    badgeColor: "bg-accent",
+    whatsappMessage: "Olá! Gostaria de adquirir o e-book 'IA na Mineração'.",
   },
   {
-    category: "Templates & Planilhas",
-    icon: FileSpreadsheet,
-    items: [
-      {
-        title: "Pack Completo de Planilhas de Perfuração",
-        description: "Conjunto de 15+ planilhas profissionais para gestão de operações de perfuração.",
-        price: "R$ 297,00",
-        features: ["Excel editável", "Instruções de uso", "Atualizações grátis"],
-      },
-      {
-        title: "Dashboard de Indicadores Excel",
-        description: "Modelo de dashboard pronto para visualização de KPIs operacionais.",
-        price: "R$ 197,00",
-        features: ["Gráficos automáticos", "Fácil personalização", "Tutorial incluso"],
-      },
-    ],
+    id: 3,
+    title: "Consultoria em Mineração Avançada",
+    description: "Torne-se um consultor especializado em projetos de mineração com metodologias avançadas.",
+    image: ebookConsultoriaAvancada,
+    features: ["Avaliação de projetos", "Due diligence mineral", "Modelagem financeira"],
+    originalPrice: "R$ 897,00",
+    price: "R$ 99,99",
+    installments: "em até 12x*",
+    whatsappMessage: "Olá! Gostaria de adquirir o e-book 'Consultoria em Mineração Avançada'.",
   },
 ];
 
 const benefits = [
   "Conteúdo desenvolvido por especialistas do setor",
   "Material prático e aplicável no dia a dia",
-  "Atualizações incluídas sem custo adicional",
+  "Acesso imediato após a compra",
   "Suporte técnico especializado",
 ];
 
 export default function Biblioteca() {
-  const whatsappLink = "https://wa.me/5573999473043?text=Olá! Gostaria de saber mais sobre os materiais da Biblioteca Minerattum.";
+  const whatsappBase = "https://wa.me/5573999473043?text=";
 
   return (
     <div className="min-h-screen bg-background">
@@ -121,7 +93,7 @@ export default function Biblioteca() {
             <motion.div variants={fadeInUp} className="flex flex-col items-center gap-4 mb-6">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/20">
                 <GraduationCap className="w-4 h-4 text-accent" />
-                <span className="text-sm font-medium text-accent">Infoprodutos de Alto Padrão</span>
+                <span className="text-sm font-medium text-accent">E-books Exclusivos</span>
               </div>
             </motion.div>
             
@@ -130,7 +102,7 @@ export default function Biblioteca() {
             </motion.h1>
             
             <motion.p variants={fadeInUp} className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              E-books, masterclasses e templates profissionais desenvolvidos por especialistas para engenheiros e gestores da mineração.
+              E-books profissionais desenvolvidos por especialistas para quem quer dominar o setor de mineração.
             </motion.p>
 
             {/* Benefits */}
@@ -146,71 +118,113 @@ export default function Biblioteca() {
         </div>
       </section>
 
-      {/* Products Grid */}
-      {infoproducts.map((category, catIndex) => (
-        <section key={category.category} className={`py-16 ${catIndex % 2 === 0 ? 'bg-card/30 border-y border-border/50' : ''}`}>
-          <div className="container px-4">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="flex items-center gap-3 mb-10"
-            >
-              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                <category.icon className="w-6 h-6 text-primary" />
-              </div>
-              <h2 className="text-2xl md:text-3xl font-bold text-foreground">
-                {category.category}
-              </h2>
-            </motion.div>
+      {/* E-books Section */}
+      <section className="py-16 bg-card/30 border-y border-border/50">
+        <div className="container px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="flex items-center gap-3 mb-10"
+          >
+            <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+              <BookOpen className="w-6 h-6 text-primary" />
+            </div>
+            <h2 className="text-2xl md:text-3xl font-bold text-foreground">
+              E-books Premium
+            </h2>
+          </motion.div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {category.items.map((item, i) => (
-                <motion.div
-                  key={item.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                  className="relative p-6 rounded-2xl bg-card border border-border hover:border-primary/30 transition-all hover:shadow-lg group"
-                >
-                  {item.badge && (
-                    <div className="absolute -top-3 right-4">
-                      <span className="px-3 py-1 rounded-full bg-accent text-accent-foreground text-xs font-semibold">
-                        {item.badge}
-                      </span>
-                    </div>
-                  )}
-                  
-                  <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
-                    {item.title}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {ebooks.map((ebook, i) => (
+              <motion.div
+                key={ebook.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="relative rounded-2xl bg-card border border-border hover:border-primary/30 transition-all hover:shadow-xl group overflow-hidden"
+              >
+                {/* Badge */}
+                {ebook.badge && (
+                  <div className="absolute top-4 right-4 z-10">
+                    <span className={`px-3 py-1 rounded-full ${ebook.badgeColor || 'bg-primary'} text-primary-foreground text-xs font-semibold shadow-lg`}>
+                      {ebook.badge}
+                    </span>
+                  </div>
+                )}
+                
+                {/* Ebook Cover */}
+                <div className="relative aspect-[3/4] overflow-hidden bg-muted">
+                  <img 
+                    src={ebook.image} 
+                    alt={ebook.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
+                </div>
+                
+                {/* Content */}
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
+                    {ebook.title}
                   </h3>
                   <p className="text-sm text-muted-foreground mb-4">
-                    {item.description}
+                    {ebook.description}
                   </p>
                   
-                  <ul className="space-y-2 mb-6">
-                    {item.features.map((feature) => (
-                      <li key={feature} className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <CheckCircle className="w-4 h-4 text-primary shrink-0" />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
+                  {/* Features */}
+                  <div className="mb-6">
+                    <p className="text-sm font-medium text-foreground mb-2">O que você vai aprender:</p>
+                    <ul className="space-y-2">
+                      {ebook.features.map((feature) => (
+                        <li key={feature} className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <CheckCircle className="w-4 h-4 text-accent shrink-0" />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                   
-                  <div className="flex items-center justify-between pt-4 border-t border-border/50">
-                    <span className="text-2xl font-bold text-foreground">{item.price}</span>
-                    <Button size="sm" className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                      Comprar
-                      <ArrowRight className="ml-2 w-4 h-4" />
+                  {/* Pricing */}
+                  <div className="pt-4 border-t border-border/50">
+                    <div className="flex flex-col gap-1 mb-4">
+                      {ebook.originalPrice && (
+                        <span className="text-sm text-muted-foreground line-through">
+                          De {ebook.originalPrice}
+                        </span>
+                      )}
+                      <div className="flex items-baseline gap-2">
+                        {ebook.originalPrice && (
+                          <span className="text-sm text-accent font-medium">Por</span>
+                        )}
+                        <span className="text-3xl font-bold text-foreground">{ebook.price}</span>
+                      </div>
+                      {ebook.installments && (
+                        <span className="text-sm text-muted-foreground">{ebook.installments}</span>
+                      )}
+                    </div>
+                    
+                    <Button 
+                      className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-semibold"
+                      asChild
+                    >
+                      <a 
+                        href={`${whatsappBase}${encodeURIComponent(ebook.whatsappMessage)}`} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                      >
+                        Comprar Agora
+                        <ArrowRight className="ml-2 w-4 h-4" />
+                      </a>
                     </Button>
                   </div>
-                </motion.div>
-              ))}
-            </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
-        </section>
-      ))}
+        </div>
+      </section>
 
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-b from-primary/5 to-background">
@@ -238,7 +252,11 @@ export default function Biblioteca() {
               className="bg-accent hover:bg-accent/90 text-accent-foreground px-8 h-12"
               asChild
             >
-              <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+              <a 
+                href={`${whatsappBase}${encodeURIComponent("Olá! Gostaria de saber mais sobre conteúdos personalizados para minha empresa.")}`} 
+                target="_blank" 
+                rel="noopener noreferrer"
+              >
                 Falar com Especialista
                 <ArrowRight className="ml-2 w-5 h-5" />
               </a>
