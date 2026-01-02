@@ -1,6 +1,6 @@
 import { Linkedin, Instagram, Mail, Phone, Lock, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
-import minerattumLogo from "@/assets/minerattum-logo.png";
+import minerattumLogo from "@/assets/minerattum-logo-main.png";
 
 const footerLinks = {
   produto: [
@@ -36,7 +36,6 @@ export const Footer = () => {
                 src={minerattumLogo} 
                 alt="Minerattum" 
                 className="h-9 w-auto"
-                style={{ filter: 'brightness(0) saturate(100%) invert(55%) sepia(98%) saturate(456%) hue-rotate(176deg) brightness(96%) contrast(101%)' }}
               />
               <span className="font-semibold text-lg text-foreground">Minerattum</span>
             </Link>

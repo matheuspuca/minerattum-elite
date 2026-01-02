@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import minerattumLogo from "@/assets/minerattum-logo-new.png";
+import minerattumLogo from "@/assets/minerattum-logo-main.png";
 
 interface AdminSidebarProps {
   collapsed: boolean;

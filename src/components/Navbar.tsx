@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "react-router-dom";
-import minerattumLogo from "@/assets/minerattum-logo-new.png";
+import minerattumLogo from "@/assets/minerattum-logo-main.png";
 
 const navLinks = [
   { label: "SmartDrill", href: "/smartdrill", highlight: true },
