@@ -1,42 +1,105 @@
+import { useMemo } from "react";
 import { motion } from "framer-motion";
-import { ArrowDown, TrendingDown, TrendingUp, Clock, Target, Users, Zap } from "lucide-react";
-import { FunnelStep } from "./types";
+import { ArrowDown, TrendingDown, TrendingUp, Target, Users, Zap } from "lucide-react";
+import { Lead, LeadStatus } from "./types";
 
 interface FunnelAnalyticsProps {
-  steps: FunnelStep[];
+  leads: Lead[];
 }
 
-export const FunnelAnalytics = ({ steps }: FunnelAnalyticsProps) => {
-  const maxCount = Math.max(...steps.map((s) => s.count));
+const STATUS_ORDER: LeadStatus[] = ["new", "contacted", "negotiation", "closed"];
+const STATUS_LABELS: Record<string, string> = {
+  new: "Novo Lead",
+  contacted: "Contatado",
+  negotiation: "Em Negociação",
+  closed: "Fechado",
+};
+
+export const FunnelAnalytics = ({ leads }: FunnelAnalyticsProps) => {
+  const funnelData = useMemo(() => {
+    const statusCounts = leads.reduce((acc, lead) => {
+      const status = lead.status || "new";
+      acc[status] = (acc[status] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+
+    // Calculate cumulative counts for funnel
+    // For a sales funnel, we need to calculate how many leads have progressed to each stage or beyond
+    const cumulativeCounts = STATUS_ORDER.map((status, index) => {
+      // Count leads at this stage or any later stage
+      const count = STATUS_ORDER.slice(index).reduce((sum, s) => sum + (statusCounts[s] || 0), 0);
+      return { status, count };
+    });
+
+    return cumulativeCounts.map((item, index) => {
+      const prevCount = index > 0 ? cumulativeCounts[index - 1].count : leads.length;
+      const dropoff = prevCount > 0 ? Math.round(((prevCount - item.count) / prevCount) * 100) : 0;
+      
+      return {
+        name: STATUS_LABELS[item.status],
+        status: item.status,
+        count: item.count,
+        actualCount: statusCounts[item.status] || 0,
+        dropoff: index === 0 ? 0 : dropoff,
+      };
+    });
+  }, [leads]);
+
+  const maxCount = Math.max(...funnelData.map((s) => s.count), 1);
   
-  // Calculate additional metrics
-  const totalConversion = steps.length > 0 
-    ? ((steps[steps.length - 1].count / steps[0].count) * 100)
-    : 0;
+  const totalConversion = useMemo(() => {
+    if (leads.length === 0) return 0;
+    const closed = leads.filter(l => l.status === "closed").length;
+    return (closed / leads.length) * 100;
+  }, [leads]);
   
-  const avgDropoff = steps.length > 1
-    ? steps.slice(0, -1).reduce((acc, s) => acc + s.dropoff, 0) / (steps.length - 1)
-    : 0;
+  const avgDropoff = useMemo(() => {
+    const dropoffs = funnelData.filter(s => s.dropoff > 0);
+    if (dropoffs.length === 0) return 0;
+    return dropoffs.reduce((acc, s) => acc + s.dropoff, 0) / dropoffs.length;
+  }, [funnelData]);
 
-  const bestStep = steps.reduce((best, step, index) => {
-    if (index === 0) return best;
-    const conversionRate = 100 - step.dropoff;
-    if (conversionRate > best.rate) {
-      return { name: step.name, rate: conversionRate, index };
-    }
-    return best;
-  }, { name: "", rate: 0, index: 0 });
+  const bestStep = useMemo(() => {
+    return funnelData.reduce((best, step, index) => {
+      if (index === 0) return best;
+      const retentionRate = 100 - step.dropoff;
+      if (retentionRate > best.rate) {
+        return { name: step.name, rate: retentionRate, index };
+      }
+      return best;
+    }, { name: "", rate: 0, index: 0 });
+  }, [funnelData]);
 
-  const worstStep = steps.reduce((worst, step, index) => {
-    if (index === 0 || step.dropoff === 0) return worst;
-    if (step.dropoff > worst.rate) {
-      return { name: step.name, rate: step.dropoff, index };
-    }
-    return worst;
-  }, { name: "", rate: 0, index: 0 });
+  const worstStep = useMemo(() => {
+    return funnelData.reduce((worst, step, index) => {
+      if (index === 0 || step.dropoff === 0) return worst;
+      if (step.dropoff > worst.rate) {
+        return { name: step.name, rate: step.dropoff, index };
+      }
+      return worst;
+    }, { name: "", rate: 0, index: 0 });
+  }, [funnelData]);
 
-  // Mock time data (in hours)
-  const avgTimePerStep = [0, 24, 48, 72];
+  if (leads.length === 0) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.1 }}
+        className="bg-card border border-border rounded-xl p-6"
+      >
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h3 className="font-semibold text-foreground">Análise de Funil</h3>
+            <p className="text-sm text-muted-foreground">Da captura à conversão</p>
+          </div>
+        </div>
+        <div className="h-64 flex items-center justify-center text-muted-foreground">
+          Nenhum lead cadastrado
+        </div>
+      </motion.div>
+    );
+  }
 
   return (
     <motion.div
@@ -57,9 +120,9 @@ export const FunnelAnalytics = ({ steps }: FunnelAnalyticsProps) => {
         <div className="bg-primary/5 border border-primary/20 rounded-lg p-3">
           <div className="flex items-center gap-2 mb-1">
             <Users className="w-4 h-4 text-primary" />
-            <span className="text-xs text-muted-foreground">Total Entrada</span>
+            <span className="text-xs text-muted-foreground">Total Leads</span>
           </div>
-          <span className="text-lg font-bold text-foreground">{steps[0]?.count || 0}</span>
+          <span className="text-lg font-bold text-foreground">{leads.length}</span>
         </div>
         
         <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-3">
@@ -67,15 +130,17 @@ export const FunnelAnalytics = ({ steps }: FunnelAnalyticsProps) => {
             <Target className="w-4 h-4 text-emerald-500" />
             <span className="text-xs text-muted-foreground">Conversões</span>
           </div>
-          <span className="text-lg font-bold text-foreground">{steps[steps.length - 1]?.count || 0}</span>
+          <span className="text-lg font-bold text-foreground">
+            {leads.filter(l => l.status === "closed").length}
+          </span>
         </div>
         
         <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3">
           <div className="flex items-center gap-2 mb-1">
-            <Clock className="w-4 h-4 text-amber-500" />
-            <span className="text-xs text-muted-foreground">Tempo Médio</span>
+            <TrendingUp className="w-4 h-4 text-amber-500" />
+            <span className="text-xs text-muted-foreground">Taxa Conversão</span>
           </div>
-          <span className="text-lg font-bold text-foreground">72h</span>
+          <span className="text-lg font-bold text-foreground">{totalConversion.toFixed(0)}%</span>
         </div>
         
         <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3">
@@ -89,11 +154,11 @@ export const FunnelAnalytics = ({ steps }: FunnelAnalyticsProps) => {
 
       {/* Funnel Visualization */}
       <div className="space-y-2 mb-6">
-        {steps.map((step, index) => {
+        {funnelData.map((step, index) => {
           const width = (step.count / maxCount) * 100;
-          const isLast = index === steps.length - 1;
-          const stepConversion = index > 0 
-            ? ((step.count / steps[index - 1].count) * 100).toFixed(0)
+          const isLast = index === funnelData.length - 1;
+          const stepConversion = index > 0 && funnelData[index - 1].count > 0
+            ? ((step.count / funnelData[index - 1].count) * 100).toFixed(0)
             : "100";
           
           return (
@@ -125,12 +190,9 @@ export const FunnelAnalytics = ({ steps }: FunnelAnalyticsProps) => {
                     <span className={`text-lg font-bold ${isLast ? "text-emerald-500" : "text-primary"}`}>
                       {step.count}
                     </span>
-                    {avgTimePerStep[index] > 0 && (
-                      <span className="text-xs text-muted-foreground flex items-center gap-1">
-                        <Clock className="w-3 h-3" />
-                        {avgTimePerStep[index]}h
-                      </span>
-                    )}
+                    <span className="text-xs text-muted-foreground">
+                      ({step.actualCount} nesta etapa)
+                    </span>
                   </div>
                 </div>
               </motion.div>
@@ -147,9 +209,6 @@ export const FunnelAnalytics = ({ steps }: FunnelAnalyticsProps) => {
                     <TrendingDown className="w-3 h-3" />
                     <span>-{step.dropoff}% de abandono</span>
                   </div>
-                  <span className="text-xs text-muted-foreground">
-                    ({Math.round(steps[index].count * (step.dropoff / 100))} leads perdidos)
-                  </span>
                 </motion.div>
               )}
             </div>
@@ -159,8 +218,7 @@ export const FunnelAnalytics = ({ steps }: FunnelAnalyticsProps) => {
 
       {/* Insights Section */}
       <div className="space-y-3">
-        {/* Best Performing Step */}
-        {bestStep.name && (
+        {bestStep.name && bestStep.rate > 0 && (
           <div className="flex items-center gap-3 p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-lg">
             <div className="p-2 bg-emerald-500/20 rounded-full">
               <TrendingUp className="w-4 h-4 text-emerald-500" />
@@ -174,7 +232,6 @@ export const FunnelAnalytics = ({ steps }: FunnelAnalyticsProps) => {
           </div>
         )}
 
-        {/* Worst Performing Step */}
         {worstStep.name && worstStep.rate > 0 && (
           <div className="flex items-center gap-3 p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
             <div className="p-2 bg-destructive/20 rounded-full">
@@ -206,7 +263,7 @@ export const FunnelAnalytics = ({ steps }: FunnelAnalyticsProps) => {
             />
           </div>
           <p className="text-xs text-muted-foreground mt-2">
-            De {steps[0]?.count || 0} leads capturados, {steps[steps.length - 1]?.count || 0} converteram em clientes
+            De {leads.length} leads capturados, {leads.filter(l => l.status === "closed").length} converteram em clientes
           </p>
         </div>
       </div>
