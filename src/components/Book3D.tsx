@@ -1,5 +1,3 @@
-import { motion } from "framer-motion";
-
 interface Book3DProps {
   coverImage: string;
   title: string;
@@ -8,12 +6,7 @@ interface Book3DProps {
 
 export function Book3D({ coverImage, title, className = "" }: Book3DProps) {
   return (
-    <motion.div 
-      className={`book-3d-container ${className}`}
-      whileHover={{ rotateY: -25 }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
-      style={{ perspective: "1000px" }}
-    >
+    <div className={`book-3d-container ${className}`}>
       <div className="book-3d">
         {/* Front Cover */}
         <div className="book-front">
@@ -36,6 +29,6 @@ export function Book3D({ coverImage, title, className = "" }: Book3DProps) {
       
       {/* Shadow */}
       <div className="book-shadow" />
-    </motion.div>
+    </div>
   );
 }
