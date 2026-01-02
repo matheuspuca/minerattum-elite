@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "react-router-dom";
-import minerattumLogo from "@/assets/minerattum-logo.png";
+import minerattumLogo from "@/assets/minerattum-logo-new.png";
 
 const navLinks = [
   { label: "SmartDrill", href: "/smartdrill", highlight: true },
@@ -33,7 +33,6 @@ export const Navbar = () => {
               src={minerattumLogo} 
               alt="Minerattum" 
               className="h-20 md:h-28 w-auto"
-              style={{ filter: 'brightness(0) saturate(100%) invert(55%) sepia(98%) saturate(456%) hue-rotate(176deg) brightness(96%) contrast(101%)' }}
             />
           </Link>
 

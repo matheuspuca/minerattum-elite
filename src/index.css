@@ -9,83 +9,101 @@
 
 @layer base {
   :root {
-    /* Core Dark Palette - SmartDrill inspired */
-    --background: 222 47% 7%;
+    /* Core Dark Palette - SaaS FinTech */
+    --background: 222 47% 6%;
     --foreground: 210 20% 98%;
 
-    --card: 222 44% 10%;
+    --card: 222 47% 8%;
     --card-foreground: 210 20% 98%;
 
-    --popover: 222 44% 10%;
+    --popover: 222 47% 8%;
     --popover-foreground: 210 20% 98%;
 
-    /* Tech Blue - Primary */
-    --primary: 210 100% 52%;
+    /* Primary Blue - Minerattum Brand */
+    --primary: 201 79% 46%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 222 35% 14%;
+    --secondary: 222 40% 12%;
     --secondary-foreground: 210 20% 90%;
 
-    --muted: 222 30% 16%;
+    --muted: 222 35% 14%;
     --muted-foreground: 215 15% 55%;
 
-    /* Premium Gold - Accent */
-    --accent: 45 93% 47%;
+    /* Emerald - Positive Metrics */
+    --emerald: 160 84% 39%;
+    --emerald-light: 160 84% 50%;
+    --emerald-dark: 160 84% 30%;
+
+    /* Amber - Hot Leads */
+    --amber: 38 92% 50%;
+    --amber-light: 38 92% 60%;
+    --amber-dark: 38 92% 40%;
+
+    /* Accent - Amber for highlights */
+    --accent: 38 92% 50%;
     --accent-foreground: 0 0% 0%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 222 25% 16%;
-    --input: 222 25% 16%;
-    --ring: 210 100% 52%;
+    --border: 222 25% 14%;
+    --input: 222 25% 14%;
+    --ring: 201 79% 46%;
 
     --radius: 0.75rem;
 
-    /* Custom tokens - Tech Blue */
-    --blue: 210 100% 52%;
-    --blue-light: 210 100% 62%;
-    --blue-dark: 210 100% 42%;
-    --blue-glow: 210 100% 52%;
+    /* Custom tokens */
+    --blue: 201 79% 46%;
+    --blue-light: 201 79% 56%;
+    --blue-dark: 201 79% 36%;
+    --blue-glow: 201 79% 46%;
     
     /* Premium Gold/Amber */
-    --gold: 45 93% 47%;
-    --gold-light: 45 93% 58%;
-    --gold-dark: 40 90% 40%;
+    --gold: 38 92% 50%;
+    --gold-light: 38 92% 60%;
+    --gold-dark: 38 92% 40%;
     
     /* Orange accent */
     --orange: 25 95% 53%;
     --orange-light: 30 95% 60%;
     --orange-dark: 20 90% 45%;
     
-    /* Slate Scale */
+    /* Slate Scale - Dark Slate */
     --slate-950: 222 47% 4%;
-    --slate-900: 222 47% 7%;
-    --slate-800: 222 44% 10%;
-    --slate-700: 222 35% 14%;
-    --slate-600: 222 25% 20%;
-    --slate-500: 222 20% 30%;
+    --slate-900: 222 47% 6%;
+    --slate-800: 222 47% 8%;
+    --slate-700: 222 40% 12%;
+    --slate-600: 222 35% 18%;
+    --slate-500: 222 25% 28%;
     
     --silver: 210 15% 70%;
     --silver-muted: 215 10% 50%;
 
     /* Dashboard dark theme */
-    --dashboard-bg: 222 47% 5%;
-    --dashboard-card: 222 44% 8%;
-    --dashboard-border: 222 30% 14%;
+    --dashboard-bg: 222 47% 4%;
+    --dashboard-card: 222 47% 7%;
+    --dashboard-border: 222 30% 12%;
+
+    /* Sidebar */
+    --sidebar-bg: 222 47% 5%;
+    --sidebar-border: 222 30% 12%;
+    --sidebar-hover: 222 40% 10%;
+    --sidebar-active: 201 79% 46%;
 
     /* Glassmorphism */
-    --glass-bg: 222 44% 10% / 0.9;
-    --glass-border: 222 25% 18% / 0.5;
+    --glass-bg: 222 47% 8% / 0.95;
+    --glass-border: 222 25% 16% / 0.5;
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(210, 100%, 52%), hsl(210, 100%, 62%));
-    --gradient-gold: linear-gradient(135deg, hsl(45, 93%, 47%), hsl(45, 93%, 58%));
-    --gradient-premium: linear-gradient(135deg, hsl(45, 93%, 47%), hsl(35, 95%, 50%));
+    --gradient-primary: linear-gradient(135deg, hsl(201, 79%, 46%), hsl(201, 79%, 56%));
+    --gradient-gold: linear-gradient(135deg, hsl(38, 92%, 50%), hsl(38, 92%, 60%));
+    --gradient-emerald: linear-gradient(135deg, hsl(160, 84%, 39%), hsl(160, 84%, 50%));
+    --gradient-premium: linear-gradient(135deg, hsl(38, 92%, 50%), hsl(30, 95%, 55%));
     
     /* Shadows */
-    --shadow-primary: 0 0 40px hsl(210 100% 52% / 0.25);
-    --shadow-gold: 0 0 40px hsl(45 93% 47% / 0.2);
+    --shadow-primary: 0 0 40px hsl(201 79% 46% / 0.25);
+    --shadow-gold: 0 0 40px hsl(38 92% 50% / 0.2);
+    --shadow-emerald: 0 0 40px hsl(160 84% 39% / 0.2);
     --shadow-card: 0 4px 24px hsl(222 47% 4% / 0.5);
     --shadow-elevated: 0 12px 40px hsl(222 47% 4% / 0.6);
   }

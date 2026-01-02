@@ -51,6 +51,16 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        emerald: {
+          DEFAULT: "hsl(var(--emerald))",
+          light: "hsl(var(--emerald-light))",
+          dark: "hsl(var(--emerald-dark))",
+        },
+        amber: {
+          DEFAULT: "hsl(var(--amber))",
+          light: "hsl(var(--amber-light))",
+          dark: "hsl(var(--amber-dark))",
+        },
         gold: {
           DEFAULT: "hsl(var(--gold))",
           light: "hsl(var(--gold-light))",
@@ -66,10 +76,18 @@ export default {
           muted: "hsl(var(--silver-muted))",
         },
         slate: {
+          950: "hsl(var(--slate-950))",
           900: "hsl(var(--slate-900))",
           800: "hsl(var(--slate-800))",
           700: "hsl(var(--slate-700))",
           600: "hsl(var(--slate-600))",
+          500: "hsl(var(--slate-500))",
+        },
+        sidebar: {
+          DEFAULT: "hsl(var(--sidebar-bg))",
+          border: "hsl(var(--sidebar-border))",
+          hover: "hsl(var(--sidebar-hover))",
+          active: "hsl(var(--sidebar-active))",
         },
       },
       borderRadius: {
