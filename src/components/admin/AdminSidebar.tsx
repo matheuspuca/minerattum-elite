@@ -79,7 +79,7 @@ export const AdminSidebar = ({ collapsed, onToggle, onSignOut }: AdminSidebarPro
               collapsed ? "h-7 w-7 object-contain" : "h-8"
             )}
           />
-          {!collapsed && <span className="font-sans font-semibold text-foreground">Minerattum</span>}
+          {!collapsed && <span className="font-sans font-semibold text-lg text-foreground tracking-tight">Minerattum</span>}
         </Link>
         <Button
           variant="ghost"

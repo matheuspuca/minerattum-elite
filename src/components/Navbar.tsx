@@ -28,13 +28,13 @@ export const Navbar = () => {
       <div className="container mx-auto px-4">
         <nav className="flex items-center justify-between h-14 md:h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2">
+          <Link to="/" className="flex items-center gap-2 md:gap-3">
             <img 
               src={minerattumIcon} 
               alt="Minerattum" 
-              className="h-8 md:h-9 w-auto"
+              className="h-7 sm:h-8 md:h-9 w-auto"
             />
-            <span className="font-sans font-semibold text-lg text-foreground">Minerattum</span>
+            <span className="font-sans font-semibold text-lg sm:text-xl md:text-2xl text-foreground tracking-tight">Minerattum</span>
           </Link>
 
           {/* Desktop Navigation */}
