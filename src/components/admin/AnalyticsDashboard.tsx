@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
-import { TrendingUp, Users, Calendar, Building } from "lucide-react";
+import { TrendingUp, Users, Calendar, Building, Clock, Target, Percent } from "lucide-react";
 import {
   LineChart,
   Line,
@@ -24,6 +24,7 @@ interface Lead {
   phone: string | null;
   message: string | null;
   source: string | null;
+  status?: string | null;
   created_at: string;
 }
 
@@ -32,6 +33,23 @@ interface AnalyticsDashboardProps {
 }
 
 const COLORS = ["hsl(200, 80%, 50%)", "hsl(160, 70%, 45%)", "hsl(280, 65%, 55%)", "hsl(340, 75%, 55%)", "hsl(45, 90%, 50%)"];
+const STATUS_COLORS: Record<string, string> = {
+  new: "hsl(200, 80%, 50%)",
+  contacted: "hsl(45, 90%, 50%)",
+  qualified: "hsl(160, 70%, 45%)",
+  proposal: "hsl(280, 65%, 55%)",
+  closed: "hsl(120, 70%, 45%)",
+  lost: "hsl(0, 70%, 50%)",
+};
+
+const STATUS_LABELS: Record<string, string> = {
+  new: "Novo",
+  contacted: "Contatado",
+  qualified: "Qualificado",
+  proposal: "Proposta",
+  closed: "Fechado",
+  lost: "Perdido",
+};
 
 const AnalyticsDashboard = ({ leads }: AnalyticsDashboardProps) => {
   // Leads por dia (últimos 30 dias)
@@ -65,6 +83,60 @@ const AnalyticsDashboard = ({ leads }: AnalyticsDashboardProps) => {
     return Object.entries(sources).map(([name, value]) => ({ name, value }));
   }, [leads]);
 
+  // Leads por status
+  const leadsByStatus = useMemo(() => {
+    const statuses = leads.reduce((acc, lead) => {
+      const status = lead.status || "new";
+      acc[status] = (acc[status] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+
+    return Object.entries(statuses).map(([status, count]) => ({
+      name: STATUS_LABELS[status] || status,
+      value: count,
+      status,
+    }));
+  }, [leads]);
+
+  // Taxa de conversão por fonte
+  const conversionBySource = useMemo(() => {
+    const sourceStats = leads.reduce((acc, lead) => {
+      const source = lead.source || "Website";
+      if (!acc[source]) {
+        acc[source] = { total: 0, closed: 0 };
+      }
+      acc[source].total++;
+      if (lead.status === "closed") {
+        acc[source].closed++;
+      }
+      return acc;
+    }, {} as Record<string, { total: number; closed: number }>);
+
+    return Object.entries(sourceStats).map(([source, stats]) => ({
+      source,
+      total: stats.total,
+      closed: stats.closed,
+      rate: stats.total > 0 ? Math.round((stats.closed / stats.total) * 100) : 0,
+    }));
+  }, [leads]);
+
+  // Tempo médio de conversão (dias até fechamento)
+  const avgConversionTime = useMemo(() => {
+    const closedLeads = leads.filter(l => l.status === "closed");
+    if (closedLeads.length === 0) return 0;
+
+    // Simulando tempo médio baseado na diferença entre created_at e uma data estimada
+    // Em um cenário real, você teria um campo closed_at
+    const now = new Date();
+    const totalDays = closedLeads.reduce((sum, lead) => {
+      const createdDate = new Date(lead.created_at);
+      const daysDiff = Math.floor((now.getTime() - createdDate.getTime()) / (1000 * 60 * 60 * 24));
+      return sum + Math.min(daysDiff, 30); // Cap em 30 dias
+    }, 0);
+
+    return Math.round(totalDays / closedLeads.length);
+  }, [leads]);
+
   // Leads com empresa vs sem empresa
   const leadsWithCompany = useMemo(() => {
     const withCompany = leads.filter((l) => l.company).length;
@@ -96,21 +168,23 @@ const AnalyticsDashboard = ({ leads }: AnalyticsDashboardProps) => {
     
     const todayLeads = leads.filter((l) => l.created_at.startsWith(today)).length;
     const weekLeads = leads.filter((l) => new Date(l.created_at) >= thisWeek).length;
-    const withPhone = leads.filter((l) => l.phone).length;
-    const conversionRate = leads.length > 0 ? ((withPhone / leads.length) * 100).toFixed(1) : 0;
+    const closedLeads = leads.filter((l) => l.status === "closed").length;
+    const conversionRate = leads.length > 0 ? ((closedLeads / leads.length) * 100).toFixed(1) : 0;
 
     return {
       total: leads.length,
       today: todayLeads,
       week: weekLeads,
       conversionRate,
+      avgConversionTime,
+      closedLeads,
     };
-  }, [leads]);
+  }, [leads, avgConversionTime]);
 
   return (
     <div className="space-y-8">
       {/* Stats Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-6 gap-4">
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -163,16 +237,46 @@ const AnalyticsDashboard = ({ leads }: AnalyticsDashboardProps) => {
           className="bg-card/50 border border-border/50 rounded-xl p-6"
         >
           <div className="flex items-center gap-3 mb-2">
+            <div className="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center">
+              <Target className="w-5 h-5 text-emerald-500" />
+            </div>
+          </div>
+          <p className="text-2xl font-bold text-foreground">{stats.closedLeads}</p>
+          <p className="text-sm text-muted-foreground">Leads Fechados</p>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="bg-card/50 border border-border/50 rounded-xl p-6"
+        >
+          <div className="flex items-center gap-3 mb-2">
             <div className="w-10 h-10 rounded-lg bg-orange-500/10 flex items-center justify-center">
-              <Building className="w-5 h-5 text-orange-500" />
+              <Percent className="w-5 h-5 text-orange-500" />
             </div>
           </div>
           <p className="text-2xl font-bold text-foreground">{stats.conversionRate}%</p>
-          <p className="text-sm text-muted-foreground">Com Telefone</p>
+          <p className="text-sm text-muted-foreground">Taxa Conversão</p>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="bg-card/50 border border-border/50 rounded-xl p-6"
+        >
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center">
+              <Clock className="w-5 h-5 text-blue-500" />
+            </div>
+          </div>
+          <p className="text-2xl font-bold text-foreground">{stats.avgConversionTime}d</p>
+          <p className="text-sm text-muted-foreground">Tempo Médio</p>
         </motion.div>
       </div>
 
-      {/* Charts Row */}
+      {/* Charts Row 1 */}
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Leads Over Time */}
         <motion.div
@@ -219,11 +323,100 @@ const AnalyticsDashboard = ({ leads }: AnalyticsDashboardProps) => {
           </div>
         </motion.div>
 
-        {/* Leads by Source */}
+        {/* Leads by Status */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
+          className="bg-card/50 border border-border/50 rounded-xl p-6"
+        >
+          <h3 className="text-lg font-semibold text-foreground mb-4">Leads por Status</h3>
+          <div className="h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={leadsByStatus}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60}
+                  outerRadius={90}
+                  paddingAngle={5}
+                  dataKey="value"
+                  label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
+                  labelLine={false}
+                >
+                  {leadsByStatus.map((entry, index) => (
+                    <Cell 
+                      key={`cell-${index}`} 
+                      fill={STATUS_COLORS[entry.status] || COLORS[index % COLORS.length]} 
+                    />
+                  ))}
+                </Pie>
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "hsl(var(--card))",
+                    border: "1px solid hsl(var(--border))",
+                    borderRadius: "8px",
+                  }}
+                />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Charts Row 2 */}
+      <div className="grid lg:grid-cols-2 gap-6">
+        {/* Conversion by Source */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="bg-card/50 border border-border/50 rounded-xl p-6"
+        >
+          <h3 className="text-lg font-semibold text-foreground mb-4">Taxa de Conversão por Fonte</h3>
+          <div className="h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={conversionBySource} layout="vertical">
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                <XAxis 
+                  type="number" 
+                  stroke="hsl(var(--muted-foreground))" 
+                  fontSize={12}
+                  tickLine={false}
+                  unit="%"
+                />
+                <YAxis 
+                  type="category"
+                  dataKey="source" 
+                  stroke="hsl(var(--muted-foreground))" 
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                  width={80}
+                />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "hsl(var(--card))",
+                    border: "1px solid hsl(var(--border))",
+                    borderRadius: "8px",
+                  }}
+                  formatter={(value: number, name: string) => [
+                    name === "rate" ? `${value}%` : value,
+                    name === "rate" ? "Conversão" : name === "total" ? "Total" : "Fechados"
+                  ]}
+                />
+                <Bar dataKey="rate" fill="hsl(160, 70%, 45%)" radius={[0, 4, 4, 0]} name="Taxa %" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </motion.div>
+
+        {/* Leads by Source */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7 }}
           className="bg-card/50 border border-border/50 rounded-xl p-6"
         >
           <h3 className="text-lg font-semibold text-foreground mb-4">Leads por Fonte</h3>
@@ -258,13 +451,13 @@ const AnalyticsDashboard = ({ leads }: AnalyticsDashboardProps) => {
         </motion.div>
       </div>
 
-      {/* Second Row */}
+      {/* Charts Row 3 */}
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Leads by Month */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
+          transition={{ delay: 0.8 }}
           className="bg-card/50 border border-border/50 rounded-xl p-6"
         >
           <h3 className="text-lg font-semibold text-foreground mb-4">Leads por Mês</h3>
@@ -301,7 +494,7 @@ const AnalyticsDashboard = ({ leads }: AnalyticsDashboardProps) => {
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 }}
+          transition={{ delay: 0.9 }}
           className="bg-card/50 border border-border/50 rounded-xl p-6"
         >
           <h3 className="text-lg font-semibold text-foreground mb-4">Leads com Empresa</h3>

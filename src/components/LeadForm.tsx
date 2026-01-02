@@ -44,7 +44,8 @@ export const LeadForm = () => {
       setErrors({});
       setIsLoading(true);
       
-      const { error } = await supabase
+      // Save lead to database
+      const { error: dbError } = await supabase
         .from("leads")
         .insert({
           name: validatedData.name,
@@ -55,7 +56,33 @@ export const LeadForm = () => {
           source: "website",
         });
 
-      if (error) throw error;
+      if (dbError) {
+        console.error("Database error:", dbError);
+        throw dbError;
+      }
+      
+      // Send email notification via edge function
+      try {
+        const { data: emailData, error: emailError } = await supabase.functions.invoke('notify-new-lead', {
+          body: {
+            name: validatedData.name,
+            email: validatedData.email,
+            company: validatedData.company || undefined,
+            phone: validatedData.phone || undefined,
+            message: validatedData.message,
+          },
+        });
+        
+        if (emailError) {
+          console.error("Email notification error:", emailError);
+          // Don't fail the form submission if email fails
+        } else {
+          console.log("Email notification sent:", emailData);
+        }
+      } catch (emailErr) {
+        console.error("Email notification exception:", emailErr);
+        // Don't fail the form submission if email fails
+      }
       
       setIsLoading(false);
       setIsSubmitted(true);
