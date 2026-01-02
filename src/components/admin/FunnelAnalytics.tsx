@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowDown, TrendingDown } from "lucide-react";
+import { ArrowDown, TrendingDown, TrendingUp, Clock, Target, Users, Zap } from "lucide-react";
 import { FunnelStep } from "./types";
 
 interface FunnelAnalyticsProps {
@@ -8,6 +8,35 @@ interface FunnelAnalyticsProps {
 
 export const FunnelAnalytics = ({ steps }: FunnelAnalyticsProps) => {
   const maxCount = Math.max(...steps.map((s) => s.count));
+  
+  // Calculate additional metrics
+  const totalConversion = steps.length > 0 
+    ? ((steps[steps.length - 1].count / steps[0].count) * 100)
+    : 0;
+  
+  const avgDropoff = steps.length > 1
+    ? steps.slice(0, -1).reduce((acc, s) => acc + s.dropoff, 0) / (steps.length - 1)
+    : 0;
+
+  const bestStep = steps.reduce((best, step, index) => {
+    if (index === 0) return best;
+    const conversionRate = 100 - step.dropoff;
+    if (conversionRate > best.rate) {
+      return { name: step.name, rate: conversionRate, index };
+    }
+    return best;
+  }, { name: "", rate: 0, index: 0 });
+
+  const worstStep = steps.reduce((worst, step, index) => {
+    if (index === 0 || step.dropoff === 0) return worst;
+    if (step.dropoff > worst.rate) {
+      return { name: step.name, rate: step.dropoff, index };
+    }
+    return worst;
+  }, { name: "", rate: 0, index: 0 });
+
+  // Mock time data (in hours)
+  const avgTimePerStep = [0, 24, 48, 72];
 
   return (
     <motion.div
@@ -23,10 +52,49 @@ export const FunnelAnalytics = ({ steps }: FunnelAnalyticsProps) => {
         </div>
       </div>
 
-      <div className="space-y-2">
+      {/* Key Metrics Summary */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+        <div className="bg-primary/5 border border-primary/20 rounded-lg p-3">
+          <div className="flex items-center gap-2 mb-1">
+            <Users className="w-4 h-4 text-primary" />
+            <span className="text-xs text-muted-foreground">Total Entrada</span>
+          </div>
+          <span className="text-lg font-bold text-foreground">{steps[0]?.count || 0}</span>
+        </div>
+        
+        <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-3">
+          <div className="flex items-center gap-2 mb-1">
+            <Target className="w-4 h-4 text-emerald-500" />
+            <span className="text-xs text-muted-foreground">Conversões</span>
+          </div>
+          <span className="text-lg font-bold text-foreground">{steps[steps.length - 1]?.count || 0}</span>
+        </div>
+        
+        <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3">
+          <div className="flex items-center gap-2 mb-1">
+            <Clock className="w-4 h-4 text-amber-500" />
+            <span className="text-xs text-muted-foreground">Tempo Médio</span>
+          </div>
+          <span className="text-lg font-bold text-foreground">72h</span>
+        </div>
+        
+        <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3">
+          <div className="flex items-center gap-2 mb-1">
+            <TrendingDown className="w-4 h-4 text-destructive" />
+            <span className="text-xs text-muted-foreground">Abandono Médio</span>
+          </div>
+          <span className="text-lg font-bold text-foreground">{avgDropoff.toFixed(0)}%</span>
+        </div>
+      </div>
+
+      {/* Funnel Visualization */}
+      <div className="space-y-2 mb-6">
         {steps.map((step, index) => {
           const width = (step.count / maxCount) * 100;
           const isLast = index === steps.length - 1;
+          const stepConversion = index > 0 
+            ? ((step.count / steps[index - 1].count) * 100).toFixed(0)
+            : "100";
           
           return (
             <div key={step.name}>
@@ -38,17 +106,32 @@ export const FunnelAnalytics = ({ steps }: FunnelAnalyticsProps) => {
                 style={{ originX: 0 }}
               >
                 <div
-                  className={`relative h-14 rounded-lg flex items-center justify-between px-4 ${
+                  className={`relative h-16 rounded-lg flex items-center justify-between px-4 ${
                     isLast 
-                      ? "bg-gradient-to-r from-emerald/20 to-emerald/10 border border-emerald/30" 
+                      ? "bg-gradient-to-r from-emerald-500/20 to-emerald-500/10 border border-emerald-500/30" 
                       : "bg-gradient-to-r from-primary/20 to-primary/5"
                   }`}
-                  style={{ width: `${Math.max(width, 30)}%` }}
+                  style={{ width: `${Math.max(width, 35)}%` }}
                 >
-                  <span className="text-sm font-medium text-foreground">{step.name}</span>
-                  <span className={`text-lg font-bold ${isLast ? "text-emerald" : "text-primary"}`}>
-                    {step.count}
-                  </span>
+                  <div className="flex flex-col">
+                    <span className="text-sm font-medium text-foreground">{step.name}</span>
+                    {index > 0 && (
+                      <span className="text-xs text-muted-foreground">
+                        {stepConversion}% da etapa anterior
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex flex-col items-end">
+                    <span className={`text-lg font-bold ${isLast ? "text-emerald-500" : "text-primary"}`}>
+                      {step.count}
+                    </span>
+                    {avgTimePerStep[index] > 0 && (
+                      <span className="text-xs text-muted-foreground flex items-center gap-1">
+                        <Clock className="w-3 h-3" />
+                        {avgTimePerStep[index]}h
+                      </span>
+                    )}
+                  </div>
                 </div>
               </motion.div>
               
@@ -64,6 +147,9 @@ export const FunnelAnalytics = ({ steps }: FunnelAnalyticsProps) => {
                     <TrendingDown className="w-3 h-3" />
                     <span>-{step.dropoff}% de abandono</span>
                   </div>
+                  <span className="text-xs text-muted-foreground">
+                    ({Math.round(steps[index].count * (step.dropoff / 100))} leads perdidos)
+                  </span>
                 </motion.div>
               )}
             </div>
@@ -71,15 +157,57 @@ export const FunnelAnalytics = ({ steps }: FunnelAnalyticsProps) => {
         })}
       </div>
 
-      {/* Conversion Summary */}
-      <div className="mt-6 p-4 bg-emerald/10 border border-emerald/20 rounded-lg">
-        <div className="flex items-center justify-between">
-          <span className="text-sm text-muted-foreground">Taxa de Conversão Total</span>
-          <span className="text-xl font-bold text-emerald">
-            {steps.length > 0 
-              ? ((steps[steps.length - 1].count / steps[0].count) * 100).toFixed(1) 
-              : 0}%
-          </span>
+      {/* Insights Section */}
+      <div className="space-y-3">
+        {/* Best Performing Step */}
+        {bestStep.name && (
+          <div className="flex items-center gap-3 p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-lg">
+            <div className="p-2 bg-emerald-500/20 rounded-full">
+              <TrendingUp className="w-4 h-4 text-emerald-500" />
+            </div>
+            <div className="flex-1">
+              <span className="text-sm font-medium text-foreground">Melhor Etapa</span>
+              <p className="text-xs text-muted-foreground">
+                "{bestStep.name}" tem {bestStep.rate.toFixed(0)}% de retenção
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Worst Performing Step */}
+        {worstStep.name && worstStep.rate > 0 && (
+          <div className="flex items-center gap-3 p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
+            <div className="p-2 bg-destructive/20 rounded-full">
+              <Zap className="w-4 h-4 text-destructive" />
+            </div>
+            <div className="flex-1">
+              <span className="text-sm font-medium text-foreground">Oportunidade de Melhoria</span>
+              <p className="text-xs text-muted-foreground">
+                "{worstStep.name}" perde {worstStep.rate}% dos leads - foco de otimização
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Total Conversion Summary */}
+        <div className="p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-lg">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm text-muted-foreground">Taxa de Conversão Total</span>
+            <span className="text-xl font-bold text-emerald-500">
+              {totalConversion.toFixed(1)}%
+            </span>
+          </div>
+          <div className="w-full bg-muted rounded-full h-2">
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: `${Math.min(totalConversion, 100)}%` }}
+              transition={{ delay: 0.5, duration: 0.8 }}
+              className="bg-emerald-500 h-2 rounded-full"
+            />
+          </div>
+          <p className="text-xs text-muted-foreground mt-2">
+            De {steps[0]?.count || 0} leads capturados, {steps[steps.length - 1]?.count || 0} converteram em clientes
+          </p>
         </div>
       </div>
     </motion.div>
