@@ -10,7 +10,7 @@ import { LeadsCRM } from "@/components/admin/LeadsCRM";
 import { HotLeadsPanel } from "@/components/admin/HotLeadsPanel";
 import { SegmentationHeatmap } from "@/components/admin/SegmentationHeatmap";
 import { FunnelAnalytics } from "@/components/admin/FunnelAnalytics";
-import { EmailMarketing } from "@/components/admin/EmailMarketing";
+import EmailMarketing from "@/components/admin/EmailMarketing";
 import { Lead, LeadStatus, TopicInterest, FunnelStep } from "@/components/admin/types";
 import { Button } from "@/components/ui/button";
 import { Home } from "lucide-react";
