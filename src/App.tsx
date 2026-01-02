@@ -7,6 +7,9 @@ import { AuthProvider } from "@/hooks/useAuth";
 import Index from "./pages/Index";
 import SmartDrill from "./pages/SmartDrill";
 import Biblioteca from "./pages/Biblioteca";
+import EbookMineracaoLegalizada from "./pages/EbookMineracaoLegalizada";
+import EbookIAMineracao from "./pages/EbookIAMineracao";
+import EbookConsultoriaAvancada from "./pages/EbookConsultoriaAvancada";
 import Contato from "./pages/Contato";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
@@ -25,6 +28,9 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/smartdrill" element={<SmartDrill />} />
             <Route path="/biblioteca" element={<Biblioteca />} />
+            <Route path="/ebook/mineracao-legalizada" element={<EbookMineracaoLegalizada />} />
+            <Route path="/ebook/ia-mineracao" element={<EbookIAMineracao />} />
+            <Route path="/ebook/consultoria-avancada" element={<EbookConsultoriaAvancada />} />
             <Route path="/contato" element={<Contato />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/admin" element={<Admin />} />
