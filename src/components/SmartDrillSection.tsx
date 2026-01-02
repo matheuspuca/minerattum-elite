@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Drill, Activity, Layers, Gauge, TrendingDown, Mountain, Circle, Zap, LayoutDashboard, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const depthData = [
   { depth: 0, hardness: 45 },
@@ -266,9 +267,12 @@ export const SmartDrillSection = () => {
               <Button 
                 size="lg" 
                 className="w-full bg-primary text-primary-foreground hover:bg-primary/90 text-base rounded-xl group"
+                asChild
               >
-                Ver Funcionalidades
-                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                <Link to="/smartdrill">
+                  Ver Funcionalidades
+                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Link>
               </Button>
             </motion.div>
           </motion.div>

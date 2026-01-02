@@ -11,6 +11,7 @@ import { HotLeadsPanel } from "@/components/admin/HotLeadsPanel";
 import { SegmentationHeatmap } from "@/components/admin/SegmentationHeatmap";
 import { FunnelAnalytics } from "@/components/admin/FunnelAnalytics";
 import EmailMarketing from "@/components/admin/EmailMarketing";
+import AnalyticsDashboard from "@/components/admin/AnalyticsDashboard";
 import { Lead, LeadStatus, TopicInterest, FunnelStep } from "@/components/admin/types";
 import { Button } from "@/components/ui/button";
 import { Home } from "lucide-react";
@@ -182,7 +183,7 @@ const Admin = () => {
       >
         <div className="p-6 lg:p-8">
           {/* Dashboard View */}
-          {activeTab === "dashboard" && (
+{activeTab === "dashboard" && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -194,6 +195,9 @@ const Admin = () => {
               </div>
 
               <StatsBar {...stats} />
+
+              {/* Analytics Dashboard com gráficos */}
+              <AnalyticsDashboard leads={leads} />
 
               <div className="grid lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2 space-y-6">
