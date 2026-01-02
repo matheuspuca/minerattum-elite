@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Gem, FileText, BookOpen, Sparkles, Download, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const products = [
   {
@@ -123,14 +124,16 @@ export const AcademySection = () => {
           transition={{ duration: 0.5, delay: 0.4 }}
           className="text-center"
         >
-          <Button 
-            size="lg" 
-            variant="outline"
-            className="border-accent/30 text-accent hover:bg-accent hover:text-accent-foreground px-8 rounded-xl"
-          >
-            Ver Todo o Catálogo
-            <ArrowRight className="ml-2 w-5 h-5" />
-          </Button>
+          <Link to="/biblioteca">
+            <Button 
+              size="lg" 
+              variant="outline"
+              className="border-accent/30 text-accent hover:bg-accent hover:text-accent-foreground px-8 rounded-xl"
+            >
+              Ver Todo o Catálogo
+              <ArrowRight className="ml-2 w-5 h-5" />
+            </Button>
+          </Link>
         </motion.div>
       </div>
     </section>
