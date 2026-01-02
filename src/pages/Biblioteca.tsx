@@ -40,7 +40,7 @@ const ebooks = [
     price: "R$ 129,99",
     installments: "em até 12x*",
     badge: "Mais Vendido",
-    purchaseLink: "https://kiwify.app/Ea0Ihrb",
+    purchaseLink: "https://pay.kiwify.com.br/6kQskbv",
   },
   {
     id: 2,
