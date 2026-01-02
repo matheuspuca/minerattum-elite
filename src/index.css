@@ -177,20 +177,20 @@
   /* 3D Book Styles */
   @keyframes book-intro {
     0% {
-      transform: rotateY(-30deg) rotateX(5deg);
+      transform: rotateY(-20deg) rotateX(3deg);
     }
     50% {
-      transform: rotateY(10deg) rotateX(-2deg);
+      transform: rotateY(5deg) rotateX(-1deg);
     }
     100% {
-      transform: rotateY(-15deg) rotateX(3deg);
+      transform: rotateY(-10deg) rotateX(2deg);
     }
   }
 
   .book-3d-container {
-    perspective: 1000px;
-    width: 180px;
-    height: 260px;
+    perspective: 800px;
+    width: 140px;
+    height: 200px;
   }
 
   .book-3d {
@@ -198,13 +198,13 @@
     width: 100%;
     height: 100%;
     transform-style: preserve-3d;
-    transform: rotateY(-15deg) rotateX(3deg);
-    transition: transform 0.5s ease-out;
-    animation: book-intro 1.5s ease-out forwards;
+    transform: rotateY(-10deg) rotateX(2deg);
+    transition: transform 0.4s ease-out;
+    animation: book-intro 1.2s ease-out forwards;
   }
 
   .book-3d-container:hover .book-3d {
-    transform: rotateY(-25deg) rotateX(5deg);
+    transform: rotateY(-18deg) rotateX(4deg);
   }
 
   .book-front {
