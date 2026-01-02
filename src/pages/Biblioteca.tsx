@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { 
   BookOpen, 
   CheckCircle,
@@ -40,7 +41,7 @@ const ebooks = [
     price: "R$ 129,99",
     installments: "em até 12x*",
     badge: "Mais Vendido",
-    purchaseLink: "https://pay.kiwify.com.br/6kQskbv",
+    pageLink: "/ebook/mineracao-legalizada",
   },
   {
     id: 2,
@@ -51,7 +52,7 @@ const ebooks = [
     price: "R$ 39,90",
     badge: "Preço Promocional",
     badgeColor: "bg-accent",
-    purchaseLink: "https://pay.kiwify.com.br/ARc8267",
+    pageLink: "/ebook/ia-mineracao",
   },
   {
     id: 3,
@@ -62,7 +63,7 @@ const ebooks = [
     originalPrice: "R$ 897,00",
     price: "R$ 99,99",
     installments: "em até 12x*",
-    purchaseLink: "https://pay.kiwify.com.br/MAiSfbr",
+    pageLink: "/ebook/consultoria-avancada",
   },
 ];
 
@@ -205,14 +206,10 @@ export default function Biblioteca() {
                       className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-semibold"
                       asChild
                     >
-                      <a 
-                        href={ebook.purchaseLink} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                      >
-                        Comprar Agora
+                      <Link to={ebook.pageLink}>
+                        Ver mais
                         <ArrowRight className="ml-2 w-4 h-4" />
-                      </a>
+                      </Link>
                     </Button>
                   </div>
                 </div>
