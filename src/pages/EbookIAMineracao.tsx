@@ -25,7 +25,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-import ebookCover from "@/assets/ebook-ia-mineracao.jpg";
+import ebookCover from "@/assets/ebook-ia-mineracao-new.png";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
