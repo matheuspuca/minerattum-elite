@@ -29,14 +29,14 @@ export const Navbar = () => {
         element.scrollIntoView({ behavior: "smooth" });
       }
     } else {
-      // Navigate to home page with hash
-      navigate("/#" + anchor);
+      // Navigate to home page first, then scroll
+      navigate("/");
       setTimeout(() => {
         const element = document.getElementById(anchor);
         if (element) {
           element.scrollIntoView({ behavior: "smooth" });
         }
-      }, 100);
+      }, 300);
     }
   };
 
