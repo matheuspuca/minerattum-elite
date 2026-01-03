@@ -1,10 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 
 export const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
+  const prevPathname = useRef(pathname);
 
   useEffect(() => {
+    // Handle hash navigation (anchor links)
     if (hash) {
       const id = decodeURIComponent(hash.replace(/^#/, ""));
       let tries = 0;
@@ -27,7 +29,11 @@ export const ScrollToTop = () => {
       return;
     }
 
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    // Scroll to top immediately on route change (not smooth, to avoid animation conflict)
+    if (prevPathname.current !== pathname) {
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      prevPathname.current = pathname;
+    }
   }, [pathname, hash]);
 
   return null;
