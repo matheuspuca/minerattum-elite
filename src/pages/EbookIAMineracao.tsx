@@ -17,7 +17,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { Book3D } from "@/components/Book3D";
 import {
   Accordion,
   AccordionContent,
@@ -214,7 +213,7 @@ export default function EbookIAMineracao() {
               </motion.div>
             </motion.div>
             
-            {/* Book 3D */}
+            {/* Ebook Cover */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -223,7 +222,11 @@ export default function EbookIAMineracao() {
             >
               <div className="relative">
                 <div className="absolute inset-0 bg-accent/20 blur-3xl rounded-full" />
-                <Book3D coverImage={ebookCover} title="IA na Mineração" />
+                <img 
+                  src={ebookCover} 
+                  alt="E-book IA na Mineração"
+                  className="max-w-full max-h-80 object-contain drop-shadow-2xl relative z-10"
+                />
               </div>
             </motion.div>
           </div>
