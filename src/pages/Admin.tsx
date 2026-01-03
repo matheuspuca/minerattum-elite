@@ -13,6 +13,7 @@ import { FunnelAnalytics } from "@/components/admin/FunnelAnalytics";
 import EmailMarketing from "@/components/admin/EmailMarketing";
 import AnalyticsDashboard from "@/components/admin/AnalyticsDashboard";
 import { SalesKPIDashboard } from "@/components/admin/SalesKPIDashboard";
+import { SettingsPanel } from "@/components/admin/SettingsPanel";
 import { Lead, LeadStatus } from "@/components/admin/types";
 import { Button } from "@/components/ui/button";
 import { Home } from "lucide-react";
@@ -332,13 +333,7 @@ const Admin = () => {
           {/* Settings */}
           {activeTab === "settings" && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-              <div className="mb-8">
-                <h1 className="text-3xl font-bold text-foreground mb-2">Configurações</h1>
-                <p className="text-muted-foreground">Configurações do sistema</p>
-              </div>
-              <div className="bg-card border border-border rounded-xl p-8 text-center">
-                <p className="text-muted-foreground">Em breve</p>
-              </div>
+              <SettingsPanel />
             </motion.div>
           )}
         </div>
