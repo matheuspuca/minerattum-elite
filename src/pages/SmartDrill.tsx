@@ -304,12 +304,17 @@ export default function SmartDrill() {
                 key={tier.name}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
+                whileHover={{ 
+                  y: -8, 
+                  scale: 1.02,
+                  transition: { duration: 0.2 }
+                }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className={`relative p-6 rounded-2xl border ${
+                className={`relative p-6 rounded-2xl border cursor-pointer transition-shadow duration-300 ${
                   tier.highlighted
-                    ? "bg-primary/5 border-primary shadow-lg shadow-primary/10"
-                    : "bg-card border-border"
+                    ? "bg-primary/5 border-primary shadow-lg shadow-primary/10 hover:shadow-xl hover:shadow-primary/20"
+                    : "bg-card border-border hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5"
                 }`}
               >
                 {tier.badge && (
