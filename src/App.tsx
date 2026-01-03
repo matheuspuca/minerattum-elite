@@ -9,6 +9,7 @@ import { AnimatePresence } from "framer-motion";
 import { PageTransition } from "@/components/PageTransition";
 import { PageSkeleton } from "@/components/PageSkeleton";
 import { ScrollToTop } from "@/components/ScrollToTop";
+import { BackToTop } from "@/components/BackToTop";
 
 // Lazy load pages
 const Index = lazy(() => import("./pages/Index"));
@@ -30,6 +31,7 @@ const AnimatedRoutes = () => {
   return (
     <>
       <ScrollToTop />
+      <BackToTop />
       <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<PageTransition><Index /></PageTransition>} />

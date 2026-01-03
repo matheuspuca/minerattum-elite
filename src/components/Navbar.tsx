@@ -17,7 +17,7 @@ export const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const isSmartDrillPage = location.pathname === "/smartdrill";
+  
 
   const handleAnchorClick = (e: React.MouseEvent, anchor: string) => {
     e.preventDefault();
@@ -62,8 +62,8 @@ export const Navbar = () => {
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-8">
             {navLinks.map((link) => {
-              const isActive = link.href === "/smartdrill" && isSmartDrillPage;
               const isRouterLink = link.href.startsWith("/") && !link.href.includes("#");
+              const isActive = isRouterLink && location.pathname === link.href;
               
               if (link.anchor) {
                 return (
@@ -83,7 +83,7 @@ export const Navbar = () => {
                     key={link.label}
                     to={link.href}
                     className={`text-sm font-medium transition-colors hover:text-primary ${
-                      isActive || link.highlight
+                      isActive
                         ? "text-primary font-semibold"
                         : "text-muted-foreground"
                     }`}
@@ -97,11 +97,7 @@ export const Navbar = () => {
                 <a
                   key={link.label}
                   href={link.href}
-                  className={`text-sm font-medium transition-colors hover:text-primary ${
-                    link.highlight
-                      ? "text-primary font-semibold"
-                      : "text-muted-foreground"
-                  }`}
+                  className="text-sm font-medium transition-colors hover:text-primary text-muted-foreground"
                 >
                   {link.label}
                 </a>
@@ -138,6 +134,7 @@ export const Navbar = () => {
             <div className="flex flex-col gap-4">
               {navLinks.map((link) => {
                 const isRouterLink = link.href.startsWith("/") && !link.href.includes("#");
+                const isActive = isRouterLink && location.pathname === link.href;
                 
                 if (link.anchor) {
                   return (
@@ -161,7 +158,7 @@ export const Navbar = () => {
                       to={link.href}
                       onClick={() => setIsOpen(false)}
                       className={`text-base font-medium transition-colors hover:text-primary ${
-                        link.highlight
+                        isActive
                           ? "text-primary font-semibold"
                           : "text-muted-foreground"
                       }`}
@@ -176,11 +173,7 @@ export const Navbar = () => {
                     key={link.label}
                     href={link.href}
                     onClick={() => setIsOpen(false)}
-                    className={`text-base font-medium transition-colors hover:text-primary ${
-                      link.highlight
-                        ? "text-primary font-semibold"
-                        : "text-muted-foreground"
-                    }`}
+                    className="text-base font-medium transition-colors hover:text-primary text-muted-foreground"
                   >
                     {link.label}
                   </a>
