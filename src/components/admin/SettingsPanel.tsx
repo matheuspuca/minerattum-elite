@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { 
+import { Json } from "@/integrations/supabase/types";
+import {
   Building2, 
   Mail, 
   Target, 
   Link2, 
   Bell, 
   Shield, 
-  Palette,
   Globe,
   MessageSquare,
   Zap,
@@ -18,17 +18,16 @@ import {
   Loader2,
   BarChart3,
   Users,
-  TrendingUp
+  TrendingUp,
+  RefreshCw
 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -41,14 +40,56 @@ interface SalesGoal {
   revenue_goal: number | null;
 }
 
+interface CompanySettings {
+  name: string;
+  email: string;
+  phone: string;
+  website: string;
+  address: string;
+  cnpj: string;
+  socialLinkedin: string;
+  socialInstagram: string;
+  socialFacebook: string;
+}
+
+interface EmailSettings {
+  senderName: string;
+  senderEmail: string;
+  replyTo: string;
+  signature: string;
+  autoResponder: boolean;
+  dailyDigest: boolean;
+  newLeadNotification: boolean;
+  statusChangeNotification: boolean;
+}
+
+interface IntegrationsSettings {
+  googleAnalyticsId: string;
+  facebookPixelId: string;
+  whatsappNumber: string;
+  whatsappApiKey: string;
+  zapierWebhook: string;
+  slackWebhook: string;
+}
+
+interface NotificationsSettings {
+  emailOnNewLead: boolean;
+  emailOnStatusChange: boolean;
+  emailDailyDigest: boolean;
+  browserNotifications: boolean;
+  slackNotifications: boolean;
+  whatsappNotifications: boolean;
+}
+
 export const SettingsPanel = () => {
   const { toast } = useToast();
   const [saving, setSaving] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("company");
 
   // Company settings state
-  const [companySettings, setCompanySettings] = useState({
+  const [companySettings, setCompanySettings] = useState<CompanySettings>({
     name: "Minerattum",
     email: "contato@minerattum.com",
     phone: "(11) 99999-9999",
@@ -61,7 +102,7 @@ export const SettingsPanel = () => {
   });
 
   // Email settings state
-  const [emailSettings, setEmailSettings] = useState({
+  const [emailSettings, setEmailSettings] = useState<EmailSettings>({
     senderName: "Minerattum",
     senderEmail: "contato@minerattum.com",
     replyTo: "contato@minerattum.com",
@@ -84,7 +125,7 @@ export const SettingsPanel = () => {
   });
 
   // Integrations state
-  const [integrations, setIntegrations] = useState({
+  const [integrations, setIntegrations] = useState<IntegrationsSettings>({
     googleAnalyticsId: "",
     facebookPixelId: "",
     whatsappNumber: "",
@@ -94,7 +135,7 @@ export const SettingsPanel = () => {
   });
 
   // Notifications state
-  const [notifications, setNotifications] = useState({
+  const [notifications, setNotifications] = useState<NotificationsSettings>({
     emailOnNewLead: true,
     emailOnStatusChange: true,
     emailDailyDigest: false,
@@ -103,27 +144,106 @@ export const SettingsPanel = () => {
     whatsappNotifications: false,
   });
 
-  // Load sales goals
+  // Load all settings on mount
   useEffect(() => {
-    loadSalesGoals();
+    loadAllSettings();
   }, []);
 
-  const loadSalesGoals = async () => {
+  const loadAllSettings = async () => {
+    setLoading(true);
     try {
-      const { data, error } = await supabase
+      // Load settings from database
+      const { data: settingsData, error: settingsError } = await supabase
+        .from("settings")
+        .select("*");
+
+      if (settingsError) throw settingsError;
+
+      if (settingsData) {
+        settingsData.forEach((setting: { key: string; value: unknown }) => {
+          switch (setting.key) {
+            case 'company':
+              setCompanySettings(setting.value as CompanySettings);
+              break;
+            case 'email':
+              setEmailSettings(setting.value as EmailSettings);
+              break;
+            case 'integrations':
+              setIntegrations(setting.value as IntegrationsSettings);
+              break;
+            case 'notifications':
+              setNotifications(setting.value as NotificationsSettings);
+              break;
+          }
+        });
+      }
+
+      // Load sales goals
+      const { data: goalsData } = await supabase
         .from("sales_goals")
         .select("*")
         .eq("month", currentMonth)
         .eq("year", currentYear)
         .single();
 
-      if (data) {
-        setSalesGoals(data);
+      if (goalsData) {
+        setSalesGoals(goalsData);
       }
     } catch (error) {
-      console.log("No existing goals found, using defaults");
+      console.error("Error loading settings:", error);
+      toast({
+        title: "Erro ao carregar configurações",
+        description: "Usando valores padrão.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
     }
   };
+
+  const saveSettings = async (settingKey: string, settingValue: unknown, category: string) => {
+    setSaving(true);
+    try {
+      // First try to update existing record
+      const { data: existing } = await supabase
+        .from("settings")
+        .select("id")
+        .eq("key", settingKey)
+        .single();
+
+      if (existing) {
+        const { error } = await supabase
+          .from("settings")
+          .update({ value: settingValue as Json, category })
+          .eq("key", settingKey);
+        if (error) throw error;
+      } else {
+        const { error } = await supabase
+          .from("settings")
+          .insert([{ key: settingKey, value: settingValue as Json, category }]);
+        if (error) throw error;
+      }
+
+      toast({
+        title: "Configurações salvas",
+        description: "Suas configurações foram atualizadas com sucesso.",
+      });
+    } catch (error) {
+      console.error("Error saving settings:", error);
+      toast({
+        title: "Erro ao salvar",
+        description: "Não foi possível salvar as configurações.",
+        variant: "destructive",
+      });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleSaveCompanySettings = () => saveSettings('company', companySettings, 'company');
+  const handleSaveEmailSettings = () => saveSettings('email', emailSettings, 'email');
+  const handleSaveIntegrations = () => saveSettings('integrations', integrations, 'integrations');
+  const handleSaveNotifications = () => saveSettings('notifications', notifications, 'notifications');
 
   const handleSaveSalesGoals = async () => {
     setSaving(true);
@@ -162,18 +282,6 @@ export const SettingsPanel = () => {
     setTimeout(() => setCopied(null), 2000);
   };
 
-  const handleSaveSettings = () => {
-    setSaving(true);
-    // Simulate save
-    setTimeout(() => {
-      setSaving(false);
-      toast({
-        title: "Configurações salvas",
-        description: "Suas configurações foram atualizadas com sucesso.",
-      });
-    }, 1000);
-  };
-
   const settingsTabs = [
     { id: "company", label: "Empresa", icon: Building2 },
     { id: "email", label: "Email", icon: Mail },
@@ -183,11 +291,28 @@ export const SettingsPanel = () => {
     { id: "security", label: "Segurança", icon: Shield },
   ];
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-96">
+        <div className="text-center space-y-4">
+          <Loader2 className="w-8 h-8 animate-spin mx-auto text-primary" />
+          <p className="text-muted-foreground">Carregando configurações...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-foreground mb-2">Configurações</h1>
-        <p className="text-muted-foreground">Gerencie as configurações do seu painel de marketing e vendas</p>
+      <div className="mb-8 flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Configurações</h1>
+          <p className="text-muted-foreground">Gerencie as configurações do seu painel de marketing e vendas</p>
+        </div>
+        <Button variant="outline" size="sm" onClick={loadAllSettings} disabled={loading}>
+          <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
+          Recarregar
+        </Button>
       </div>
 
       <div className="flex flex-col lg:flex-row gap-6">
@@ -333,7 +458,7 @@ export const SettingsPanel = () => {
               </Card>
 
               <div className="flex justify-end">
-                <Button onClick={handleSaveSettings} disabled={saving}>
+                <Button onClick={handleSaveCompanySettings} disabled={saving}>
                   {saving ? (
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                   ) : (
@@ -470,7 +595,7 @@ export const SettingsPanel = () => {
               </Card>
 
               <div className="flex justify-end">
-                <Button onClick={handleSaveSettings} disabled={saving}>
+                <Button onClick={handleSaveEmailSettings} disabled={saving}>
                   {saving ? (
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                   ) : (
@@ -730,7 +855,7 @@ export const SettingsPanel = () => {
               </Card>
 
               <div className="flex justify-end">
-                <Button onClick={handleSaveSettings} disabled={saving}>
+                <Button onClick={handleSaveIntegrations} disabled={saving}>
                   {saving ? (
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                   ) : (
@@ -843,7 +968,7 @@ export const SettingsPanel = () => {
               </Card>
 
               <div className="flex justify-end">
-                <Button onClick={handleSaveSettings} disabled={saving}>
+                <Button onClick={handleSaveNotifications} disabled={saving}>
                   {saving ? (
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                   ) : (
