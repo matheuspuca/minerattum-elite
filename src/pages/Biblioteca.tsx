@@ -156,11 +156,11 @@ export default function Biblioteca() {
                 )}
                 
                 {/* Ebook Cover */}
-                <div className="relative h-56 overflow-hidden bg-gradient-to-b from-muted/50 to-muted flex items-center justify-center p-4">
+                <div className="relative h-56 overflow-hidden bg-gradient-to-b from-muted/50 to-muted flex items-center justify-center p-4 group/image">
                   <img 
                     src={ebook.image} 
                     alt={ebook.title}
-                    className="max-w-full max-h-full object-contain drop-shadow-xl"
+                    className="max-w-full max-h-full object-contain drop-shadow-xl transition-all duration-300 group-hover/image:scale-110 group-hover/image:drop-shadow-2xl"
                   />
                 </div>
                 

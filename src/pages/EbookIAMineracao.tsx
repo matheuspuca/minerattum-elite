@@ -218,14 +218,14 @@ export default function EbookIAMineracao() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 }}
-              className="flex justify-center"
+              className="flex justify-center group"
             >
               <div className="relative">
-                <div className="absolute inset-0 bg-accent/20 blur-3xl rounded-full" />
+                <div className="absolute inset-0 bg-accent/20 blur-3xl rounded-full transition-all duration-300 group-hover:bg-accent/30 group-hover:blur-[60px]" />
                 <img 
                   src={ebookCover} 
                   alt="E-book IA na Mineração"
-                  className="max-w-full max-h-80 object-contain drop-shadow-2xl relative z-10"
+                  className="max-w-full max-h-80 object-contain drop-shadow-2xl relative z-10 transition-all duration-300 group-hover:scale-105 group-hover:drop-shadow-[0_25px_50px_rgba(0,0,0,0.5)]"
                 />
               </div>
             </motion.div>
