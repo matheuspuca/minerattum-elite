@@ -1,3 +1,4 @@
+import { Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -6,16 +7,19 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import { AnimatePresence } from "framer-motion";
 import { PageTransition } from "@/components/PageTransition";
-import Index from "./pages/Index";
-import SmartDrill from "./pages/SmartDrill";
-import Biblioteca from "./pages/Biblioteca";
-import EbookMineracaoLegalizada from "./pages/EbookMineracaoLegalizada";
-import EbookIAMineracao from "./pages/EbookIAMineracao";
-import EbookConsultoriaAvancada from "./pages/EbookConsultoriaAvancada";
-import Contato from "./pages/Contato";
-import Auth from "./pages/Auth";
-import Admin from "./pages/Admin";
-import NotFound from "./pages/NotFound";
+import { PageSkeleton } from "@/components/PageSkeleton";
+
+// Lazy load pages
+const Index = lazy(() => import("./pages/Index"));
+const SmartDrill = lazy(() => import("./pages/SmartDrill"));
+const Biblioteca = lazy(() => import("./pages/Biblioteca"));
+const EbookMineracaoLegalizada = lazy(() => import("./pages/EbookMineracaoLegalizada"));
+const EbookIAMineracao = lazy(() => import("./pages/EbookIAMineracao"));
+const EbookConsultoriaAvancada = lazy(() => import("./pages/EbookConsultoriaAvancada"));
+const Contato = lazy(() => import("./pages/Contato"));
+const Auth = lazy(() => import("./pages/Auth"));
+const Admin = lazy(() => import("./pages/Admin"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
 
@@ -48,7 +52,9 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
-          <AnimatedRoutes />
+          <Suspense fallback={<PageSkeleton />}>
+            <AnimatedRoutes />
+          </Suspense>
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
