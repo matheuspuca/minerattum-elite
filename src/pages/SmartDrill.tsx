@@ -164,10 +164,12 @@ export default function SmartDrill() {
             </motion.p>
             
             <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 h-12">
-                Começar Agora
-                <ArrowRight className="ml-2 w-5 h-5" />
-              </Button>
+              <a href="https://smartdrillpro.vercel.app/signup" target="_blank" rel="noopener noreferrer">
+                <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 h-12">
+                  Começar Agora
+                  <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+              </a>
               <Button size="lg" variant="outline" className="border-border hover:bg-muted h-12 px-8">
                 <Play className="mr-2 w-5 h-5" />
                 Ver Demo
