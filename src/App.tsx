@@ -8,6 +8,7 @@ import { AuthProvider } from "@/hooks/useAuth";
 import { AnimatePresence } from "framer-motion";
 import { PageTransition } from "@/components/PageTransition";
 import { PageSkeleton } from "@/components/PageSkeleton";
+import { ScrollToTop } from "@/components/ScrollToTop";
 
 // Lazy load pages
 const Index = lazy(() => import("./pages/Index"));
@@ -27,7 +28,9 @@ const AnimatedRoutes = () => {
   const location = useLocation();
 
   return (
-    <AnimatePresence mode="wait">
+    <>
+      <ScrollToTop />
+      <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<PageTransition><Index /></PageTransition>} />
         <Route path="/smartdrill" element={<PageTransition><SmartDrill /></PageTransition>} />
@@ -41,7 +44,8 @@ const AnimatedRoutes = () => {
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
       </Routes>
-    </AnimatePresence>
+      </AnimatePresence>
+    </>
   );
 };
 
