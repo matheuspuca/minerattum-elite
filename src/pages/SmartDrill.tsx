@@ -266,11 +266,16 @@ export default function SmartDrill() {
                 key={feature.title}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
+                whileHover={{ 
+                  y: -6, 
+                  scale: 1.02,
+                  transition: { duration: 0.2 }
+                }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="p-6 rounded-xl bg-card border border-border hover:border-primary/30 transition-colors"
+                className="p-6 rounded-xl bg-card border border-border hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 cursor-pointer"
               >
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110">
                   <feature.icon className="w-6 h-6 text-primary" />
                 </div>
                 <h3 className="text-lg font-semibold text-foreground mb-2">{feature.title}</h3>
@@ -388,9 +393,14 @@ export default function SmartDrill() {
                 key={testimonial.name}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
+                whileHover={{ 
+                  y: -6, 
+                  scale: 1.02,
+                  transition: { duration: 0.2 }
+                }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="p-6 rounded-xl bg-card border border-border"
+                className="p-6 rounded-xl bg-card border border-border hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 cursor-pointer"
               >
                 <div className="flex items-center gap-1 mb-4">
                   {[...Array(5)].map((_, i) => (
