@@ -9,7 +9,7 @@ const navLinks = [
   { label: "SmartDrill", href: "/smartdrill", highlight: true },
   { label: "Biblioteca", href: "/biblioteca" },
   { label: "Sobre", href: "/#sobre" },
-  { label: "Contato", href: "/#contato" },
+  { label: "Contato", href: "/contato" },
 ];
 
 export const Navbar = () => {
