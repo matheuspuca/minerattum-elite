@@ -16,27 +16,18 @@ export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-
-  
-
   const handleAnchorClick = (e: React.MouseEvent, anchor: string) => {
     e.preventDefault();
-    
+
+    const hash = `#${anchor}`;
+
+    // Navigate with hash so the app can scroll after lazy loading/transition
+    navigate({ pathname: "/", hash });
+
+    // If we're already on the homepage, scroll immediately
     if (location.pathname === "/") {
-      // Already on home page, scroll to section
       const element = document.getElementById(anchor);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-      }
-    } else {
-      // Navigate to home page first, then scroll
-      navigate("/");
-      setTimeout(() => {
-        const element = document.getElementById(anchor);
-        if (element) {
-          element.scrollIntoView({ behavior: "smooth" });
-        }
-      }, 300);
+      element?.scrollIntoView({ behavior: "smooth" });
     }
   };
 
