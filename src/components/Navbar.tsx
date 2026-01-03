@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -14,8 +14,40 @@ const navLinks = [
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [activeAnchor, setActiveAnchor] = useState<string | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
+
+  // Scrollspy: observe anchor sections on homepage
+  useEffect(() => {
+    if (location.pathname !== "/") {
+      setActiveAnchor(null);
+      return;
+    }
+
+    const anchors = navLinks.filter((l) => l.anchor).map((l) => l.anchor!);
+    const observers: IntersectionObserver[] = [];
+
+    anchors.forEach((anchor) => {
+      const el = document.getElementById(anchor);
+      if (!el) return;
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setActiveAnchor(anchor);
+          }
+        },
+        { rootMargin: "-40% 0px -55% 0px", threshold: 0 }
+      );
+
+      observer.observe(el);
+      observers.push(observer);
+    });
+
+    return () => observers.forEach((o) => o.disconnect());
+  }, [location.pathname]);
+
   const handleAnchorClick = (e: React.MouseEvent, anchor: string) => {
     e.preventDefault();
 
@@ -57,11 +89,14 @@ export const Navbar = () => {
               const isActive = isRouterLink && location.pathname === link.href;
               
               if (link.anchor) {
+                const isAnchorActive = location.pathname === "/" && activeAnchor === link.anchor;
                 return (
                   <button
                     key={link.label}
                     onClick={(e) => handleAnchorClick(e, link.anchor!)}
-                    className="text-sm font-medium transition-colors hover:text-primary text-muted-foreground"
+                    className={`text-sm font-medium transition-colors hover:text-primary ${
+                      isAnchorActive ? "text-primary font-semibold" : "text-muted-foreground"
+                    }`}
                   >
                     {link.label}
                   </button>
@@ -127,7 +162,8 @@ export const Navbar = () => {
                 const isRouterLink = link.href.startsWith("/") && !link.href.includes("#");
                 const isActive = isRouterLink && location.pathname === link.href;
                 
-                if (link.anchor) {
+              if (link.anchor) {
+                  const isAnchorActive = location.pathname === "/" && activeAnchor === link.anchor;
                   return (
                     <button
                       key={link.label}
@@ -135,7 +171,9 @@ export const Navbar = () => {
                         handleAnchorClick(e, link.anchor!);
                         setIsOpen(false);
                       }}
-                      className="text-base font-medium transition-colors hover:text-primary text-muted-foreground text-left"
+                      className={`text-base font-medium transition-colors hover:text-primary text-left ${
+                        isAnchorActive ? "text-primary font-semibold" : "text-muted-foreground"
+                      }`}
                     >
                       {link.label}
                     </button>
