@@ -13,9 +13,9 @@ import { Footer } from "@/components/Footer";
 import { Book3D } from "@/components/Book3D";
 
 // Import ebook covers
-import ebookMineracaoLegalizada from "@/assets/ebook-mineracao-legalizada.jpg";
+import ebookMineracaoLegalizada from "@/assets/ebook-mineracao-legalizada-new.png";
 import ebookIAMineracao from "@/assets/ebook-ia-mineracao-new.png";
-import ebookConsultoriaAvancada from "@/assets/ebook-consultoria-avancada.png";
+import ebookConsultoriaAvancada from "@/assets/ebook-consultoria-avancada-new.png";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
