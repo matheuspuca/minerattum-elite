@@ -2,21 +2,43 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import minerattumIcon from "@/assets/minerattum-icon.png";
 
 const navLinks = [
   { label: "SmartDrill", href: "/smartdrill", highlight: true },
   { label: "Biblioteca", href: "/biblioteca" },
-  { label: "Sobre", href: "/#sobre" },
+  { label: "Sobre", href: "/#sobre", anchor: "sobre" },
   { label: "Contato", href: "/contato" },
 ];
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const isSmartDrillPage = location.pathname === "/smartdrill";
+
+  const handleAnchorClick = (e: React.MouseEvent, anchor: string) => {
+    e.preventDefault();
+    
+    if (location.pathname === "/") {
+      // Already on home page, scroll to section
+      const element = document.getElementById(anchor);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      // Navigate to home page with hash
+      navigate("/#" + anchor);
+      setTimeout(() => {
+        const element = document.getElementById(anchor);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 100);
+    }
+  };
 
   return (
     <motion.header
@@ -42,6 +64,18 @@ export const Navbar = () => {
             {navLinks.map((link) => {
               const isActive = link.href === "/smartdrill" && isSmartDrillPage;
               const isRouterLink = link.href.startsWith("/") && !link.href.includes("#");
+              
+              if (link.anchor) {
+                return (
+                  <button
+                    key={link.label}
+                    onClick={(e) => handleAnchorClick(e, link.anchor!)}
+                    className="text-sm font-medium transition-colors hover:text-primary text-muted-foreground"
+                  >
+                    {link.label}
+                  </button>
+                );
+              }
               
               if (isRouterLink) {
                 return (
@@ -104,6 +138,21 @@ export const Navbar = () => {
             <div className="flex flex-col gap-4">
               {navLinks.map((link) => {
                 const isRouterLink = link.href.startsWith("/") && !link.href.includes("#");
+                
+                if (link.anchor) {
+                  return (
+                    <button
+                      key={link.label}
+                      onClick={(e) => {
+                        handleAnchorClick(e, link.anchor!);
+                        setIsOpen(false);
+                      }}
+                      className="text-base font-medium transition-colors hover:text-primary text-muted-foreground text-left"
+                    >
+                      {link.label}
+                    </button>
+                  );
+                }
                 
                 if (isRouterLink) {
                   return (
