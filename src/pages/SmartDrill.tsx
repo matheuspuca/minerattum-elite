@@ -190,7 +190,17 @@ export default function SmartDrill() {
           >
             <div className="grid md:grid-cols-2 gap-8">
               {/* Pain */}
-              <div className="p-8 rounded-2xl bg-destructive/5 border border-destructive/20">
+              <motion.div 
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                whileHover={{ 
+                  y: -6, 
+                  scale: 1.02,
+                  transition: { duration: 0.2 }
+                }}
+                viewport={{ once: true }}
+                className="p-8 rounded-2xl bg-destructive/5 border border-destructive/20 hover:border-destructive/40 hover:shadow-lg hover:shadow-destructive/10 transition-all duration-300 cursor-pointer"
+              >
                 <h3 className="text-xl font-semibold text-destructive mb-4">❌ Sem SmartDrill</h3>
                 <ul className="space-y-3 text-muted-foreground">
                   <li className="flex items-start gap-3">
@@ -210,10 +220,20 @@ export default function SmartDrill() {
                     Zero visibilidade sobre custos reais
                   </li>
                 </ul>
-              </div>
+              </motion.div>
 
               {/* Solution */}
-              <div className="p-8 rounded-2xl bg-primary/5 border border-primary/20">
+              <motion.div 
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                whileHover={{ 
+                  y: -6, 
+                  scale: 1.02,
+                  transition: { duration: 0.2 }
+                }}
+                viewport={{ once: true }}
+                className="p-8 rounded-2xl bg-primary/5 border border-primary/20 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 cursor-pointer"
+              >
                 <h3 className="text-xl font-semibold text-primary mb-4">✓ Com SmartDrill</h3>
                 <ul className="space-y-3 text-muted-foreground">
                   <li className="flex items-start gap-3">
@@ -233,7 +253,7 @@ export default function SmartDrill() {
                     Decisões baseadas em dados confiáveis
                   </li>
                 </ul>
-              </div>
+              </motion.div>
             </div>
           </motion.div>
         </div>
